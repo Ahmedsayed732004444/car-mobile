@@ -43,7 +43,7 @@ class DialogUtils{
 
   Future showAdvancedDialog(BuildContext context,{ String? title , description ='' ,
     String? iconPath, textCancel='خروج' ,String? textOk, Color? iconColor,
-    required GestureTapCallback onTabCancel, final GestureTapCallback? onTabOk ,Color colorCancelButton = Colors.redAccent, }) async {
+    required GestureTapCallback onTabCancel, final GestureTapCallback? onTabOk ,Color colorCancelButton = Colors.redAccent, Color? colorOkButton, }) async {
     return showDialog(context: context,
         builder: (BuildContext context) {
           return Dialog(
@@ -84,6 +84,8 @@ class DialogUtils{
                             onPressed:onTabOk ?? (){},
                             margin:const EdgeInsets.only(left: 5.0 ,right: 5.0),
                             text: textOk,
+                            bgColor: colorOkButton ?? AppColor.primaryColor,
+                            borderColor: colorOkButton ?? AppColor.primaryColor,
                           ),
                         ),
                         Expanded(flex: 1,
@@ -205,8 +207,10 @@ class DialogUtils{
   void showConfirmDialog(BuildContext context,{required String? message, required final VoidCallback confirm}){
     DialogUtils().showAdvancedDialog(context,
       description: message,
-      textCancel: 'خروج',
+      textCancel: 'إلغاء',
       textOk: 'موافق',
+      colorCancelButton: AppColor.primaryColor,
+      colorOkButton: Colors.redAccent,
       iconPath: AssetsPath.icon_info,
       onTabCancel: (){
         Navigator.of(context).pop();
