@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../core/localization/app_language_provider.dart';
 import '../../core/providers/cache_provider.dart';
 import '../../core/providers/vendors/specialty_vendor_provider.dart';
+import '../../core/utils/constants/colors_constants.dart';
 import '../../core/utils/form_validator.dart';
 import '../../core/utils/size_config.dart';
 import '../components.dart';
