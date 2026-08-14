@@ -14,6 +14,7 @@ import '../../../../core/data_sources/remote/api_path.dart';
 import '../../../../core/localization/app_language_provider.dart';
 import '../../../../core/providers/cache_provider.dart';
 import '../../../../core/providers/conversation_provider.dart';
+import '../../../../core/providers/notification_badge_provider.dart';
 import '../../../../core/providers/shipping_provider.dart';
 import '../../../../core/styles/styles.dart';
 import '../../../../core/utils/connection_utils.dart';
