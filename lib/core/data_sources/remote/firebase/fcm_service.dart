@@ -6,9 +6,11 @@ import 'package:car_mediator_mobile/core/utils/connection_utils.dart';
 import 'package:car_mediator_mobile/core/utils/context_utils.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../features/shared/notifications/screens/notifications_screen.dart';
 import '../../../../widgets/components.dart';
+import '../../../providers/notification_badge_provider.dart';
 import '../../local/secure_storage.dart';
 
 
@@ -150,6 +152,15 @@ class FcmService {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       // if this is available when Platform.isIOS, you'll receive the notification twice
       print("message recieved----onMessage--foreground messages-----");
+      final cxt = ContextUtils.globalContext;
+      if (cxt != null) {
+        try {
+          cxt.read<NotificationBadgeProvider>().fetchUnreadCounts();
+        } catch (e) {
+          log('Error updating NotificationBadgeProvider on FCM: $e');
+        }
+      }
+
       if(message.notification != null){
         print('title---- ${message.notification?.title}');
         print('body---- ${message.notification?.body}');
