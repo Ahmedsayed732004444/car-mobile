@@ -37,35 +37,7 @@ class AppBarHomeVendorPage extends StatelessWidget implements PreferredSizeWidge
           ],
         ),
         elevation: 0,
-        actions:  [
-          IconButton(onPressed: (){
-            navigationPush(context, const NotificationsScreen());
-          }, icon: badges.Badge(
-            position: badges.BadgePosition.topEnd(top: -10, end: 10),
-            badgeContent:   Text('0', style: TextStyle(color: Colors.white, fontSize: SizeConfig.widthResponsive(0.025)),),
-            child: const Icon(Icons.notifications_none_outlined, color: AppColor.primaryColor,),
-          ),),
-
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 10),
-          //   child: InkWell(
-          //     onTap: () => navigationPush(context, const NotificationsScreen()),
-          //     child: Consumer<NotificationsProvider>( // استخدام Consumer لتحسين الأداء
-          //       builder: (context, notificationsProvider, child) {
-          //         return badges.Badge(
-          //           position: badges.BadgePosition.topEnd(top: -14, end: 10),
-          //           badgeContent: Text(
-          //             '${notificationsProvider.counterNotification ?? 0}',
-          //             style: const TextStyle(color: Colors.white),
-          //           ),
-          //           child: child,
-          //         );
-          //       },
-          //       child: const Icon(Icons.notifications_sharp, color: AppColor.primaryColor),
-          //     ),
-          //   ),
-          // ),
-        ],
+        actions: const [],
         leadingWidth: SizeConfig.widthResponsive(0.18),
         titleSpacing: 0,
         leading:  Padding(padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),

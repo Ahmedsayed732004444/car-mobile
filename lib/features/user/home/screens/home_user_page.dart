@@ -5,9 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/providers/bottom_navigation_bar_provider.dart';
+import '../../../../core/providers/notification_badge_provider.dart';
 import '../../../../core/utils/constants/assets_path.dart';
 import '../../../../core/utils/constants/colors_constants.dart';
 import '../../../../core/utils/size_config.dart';
+import '../../../../widgets/section_badge_widget.dart';
 import '../../../shared/account/screens/account_screen.dart';
 import '../../my_conversations/screens/user_conversations_screen.dart';
 import '../../my_requests/screens/my_requests_user_screen.dart';
@@ -44,6 +46,9 @@ class _HomeUserPageState extends State<HomeUserPage> {
   void initState() {
     super.initState();
     FcmService.onMessage();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<NotificationBadgeProvider>().fetchUnreadCounts();
+    });
   }
 
   @override
@@ -61,15 +66,33 @@ class _HomeUserPageState extends State<HomeUserPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: navProvider.currentIndex,
-        onTap: (index) => navProvider.setCurrentIndex(context, index, controller: _pageController),
+        onTap: (index) {
+          if (index == 1) {
+            context.read<NotificationBadgeProvider>().markCategoryRead('company_responses');
+          } else if (index == 2) {
+            context.read<NotificationBadgeProvider>().markCategoryRead('conversations');
+          }
+          navProvider.setCurrentIndex(context, index, controller: _pageController);
+        },
         items: List.generate(_navItems.length, (index) {
           final item = _navItems[index];
           final isActive = index == navProvider.currentIndex;
+          final String? categoryKey = index == 1 ? 'company_responses' : (index == 2 ? 'conversations' : null);
+
+          Widget iconWidget = Image.asset(
+            item.icon,
+            color: isActive ? AppColor.primaryColor : AppColor.greyColor,
+          );
+
+          if (categoryKey != null) {
+            iconWidget = SectionBadgeWidget(
+              categoryKey: categoryKey,
+              child: iconWidget,
+            );
+          }
+
           return BottomNavigationBarItem(
-            icon: Image.asset(
-              item.icon,
-              color: isActive ? AppColor.primaryColor :AppColor.greyColor,
-            ),
+            icon: iconWidget,
             label: item.label,
           );
         }),

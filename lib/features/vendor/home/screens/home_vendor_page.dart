@@ -7,9 +7,11 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/data_sources/remote/firebase/fcm_service.dart';
 import '../../../../core/providers/auth_provider.dart';
+import '../../../../core/providers/notification_badge_provider.dart';
 import '../../../../core/utils/dialogUtils.dart';
 import '../../../../core/utils/size_config.dart';
 import '../../../../widgets/banners/banner_widget.dart';
+import '../../../../widgets/section_badge_widget.dart';
 import '../../../../widgets/vendor/dashboard_item_home.dart';
 import '../../app_commission/screens/app_commission_screen.dart';
 import '../../my_conversations/screens/vendor_conversations_screen.dart';
@@ -31,6 +33,9 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
   void initState() {
     super.initState();
     FcmService.onMessage();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<NotificationBadgeProvider>().fetchUnreadCounts();
+    });
   }
 
   @override
@@ -58,13 +63,17 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
             children: [
               Expanded(
                 flex: 1,
-                child: DashboardItemHome(
-                  title: 'طلبات العملاء',
-                  icon: const Icon(Icons.sticky_note_2, color: AppColor.primaryColor, size: 32,),
-                  subTitle: 'الطلبات الجديدة',
-                  onTap: (){
-                    navigationPush(context, const NewRequestScreen());
-                  },
+                child: SectionBadgeWidget(
+                  categoryKey: 'customer_requests',
+                  child: DashboardItemHome(
+                    title: 'طلبات العملاء',
+                    icon: const Icon(Icons.sticky_note_2, color: AppColor.primaryColor, size: 32,),
+                    subTitle: 'الطلبات الجديدة',
+                    onTap: (){
+                      context.read<NotificationBadgeProvider>().markCategoryRead('customer_requests');
+                      navigationPush(context, const NewRequestScreen());
+                    },
+                  ),
                 ),
               ),
               const SizedBox(
@@ -72,13 +81,17 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
               ),
               Expanded(
                 flex: 1,
-                child: DashboardItemHome(
-                  title: 'ردود الشركة',
-                  subTitle: 'ردود الطلبات',
-                  icon: const Icon(Icons.reply_all_outlined, color: AppColor.primaryColor, size: 32),
-                  onTap: (){
-                    navigationPush(context, const MyResponseRequestScreen());
-                  },
+                child: SectionBadgeWidget(
+                  categoryKey: 'company_responses',
+                  child: DashboardItemHome(
+                    title: 'ردود الشركة',
+                    subTitle: 'ردود الطلبات',
+                    icon: const Icon(Icons.reply_all_outlined, color: AppColor.primaryColor, size: 32),
+                    onTap: (){
+                      context.read<NotificationBadgeProvider>().markCategoryRead('company_responses');
+                      navigationPush(context, const MyResponseRequestScreen());
+                    },
+                  ),
                 ),
               ),
             ],
@@ -106,13 +119,17 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: DashboardItemHome(
-                    title: 'المحادثات',
-                    subTitle: 'محادثاتي',
-                    icon: const Icon(Icons.chat, color: AppColor.primaryColor, size: 32),
-                    onTap: (){
-                      navigationPush(context, const VendorConversationScreen());
-                    },
+                  child: SectionBadgeWidget(
+                    categoryKey: 'conversations',
+                    child: DashboardItemHome(
+                      title: 'المحادثات',
+                      subTitle: 'محادثاتي',
+                      icon: const Icon(Icons.chat, color: AppColor.primaryColor, size: 32),
+                      onTap: (){
+                        context.read<NotificationBadgeProvider>().markCategoryRead('conversations');
+                        navigationPush(context, const VendorConversationScreen());
+                      },
+                    ),
                   ),
                 ),
               ],
