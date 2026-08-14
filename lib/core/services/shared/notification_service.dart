@@ -1,0 +1,29 @@
+
+import 'package:car_mediator_mobile/core/services/base_service.dart';
+import 'package:flutter/cupertino.dart';
+
+import '../../../models/notification_model.dart';
+import '../../data_sources/remote/api_service.dart';
+import '../../errors/api_exceptions.dart';
+import '../../helpers/toast_helper.dart';
+
+class NotificationService extends BaseService  {
+  final ApiService _apiService;
+
+  NotificationService(this._apiService);
+
+  Future<NotificationResponseModel?> getNotifications({ required int page}) async {
+    try {
+      final response = await _apiService.getData('notifications', queryParams: {'page': page.toString()});
+      return NotificationResponseModel.fromJson(response);
+    } on ApiException catch (e) {
+      ToastHelper.showError(e.message);
+      debugPrint('API Error: ${e.message}, StatusCode: ${e.statusCode}');
+      return null;
+    } catch (e) {
+      debugPrint('Unexpected Error: $e');
+      ToastHelper.showError('حدث خطأ غير متوقع. الرجاء المحاولة مرة أخرى.');
+      return null;
+    }
+  }
+}

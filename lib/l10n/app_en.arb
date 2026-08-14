@@ -1,0 +1,7 @@
+{
+  "@@locale": "en",
+  "appName": "وسيط سيارات",
+  "welcomeToApp" : "مرحباً بكم في تطبيق وسيط سيارات",
+  "dataIsBeingFormatted" : "جارِ تهيئة البيانات",
+  "noInternetConnection": "no internet connection"
+}

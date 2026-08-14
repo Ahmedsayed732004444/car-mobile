@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "676672357411",
+    "project_id": "car-mediator-platform",
+    "storage_bucket": "car-mediator-platform.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:676672357411:android:bd10df5c42a27994aedd96",
+        "android_client_info": {
+          "package_name": "com.mohammed.f.beshr.car.mediator.app.car_mediator_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcyk4cTxRUHE-zSgMNlhWXIwPFJgZf6dI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
