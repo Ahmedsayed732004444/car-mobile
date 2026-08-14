@@ -70,7 +70,6 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
                     icon: const Icon(Icons.sticky_note_2, color: AppColor.primaryColor, size: 32,),
                     subTitle: 'الطلبات الجديدة',
                     onTap: (){
-                      context.read<NotificationBadgeProvider>().markCategoryRead('customer_requests');
                       navigationPush(context, const NewRequestScreen());
                     },
                   ),
@@ -88,7 +87,6 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
                     subTitle: 'ردود الطلبات',
                     icon: const Icon(Icons.reply_all_outlined, color: AppColor.primaryColor, size: 32),
                     onTap: (){
-                      context.read<NotificationBadgeProvider>().markCategoryRead('company_responses');
                       navigationPush(context, const MyResponseRequestScreen());
                     },
                   ),
@@ -126,7 +124,6 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
                       subTitle: 'محادثاتي',
                       icon: const Icon(Icons.chat, color: AppColor.primaryColor, size: 32),
                       onTap: (){
-                        context.read<NotificationBadgeProvider>().markCategoryRead('conversations');
                         navigationPush(context, const VendorConversationScreen());
                       },
                     ),

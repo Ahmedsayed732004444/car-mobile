@@ -10,24 +10,91 @@ class NotificationBadgeProvider extends ChangeNotifier {
     'conversations': 0,
   };
 
+  Map<String, Map<int, int>> entityUnreadCounts = {
+    'conversations': {},
+    'customer_requests': {},
+    'company_responses': {},
+  };
+
   NotificationBadgeProvider(this._service);
 
-  int getCount(String category) {
+  int getCount(String category, {int? entityId}) {
+    if (entityId != null) {
+      return entityUnreadCounts[category]?[entityId] ?? 0;
+    }
     return unreadCounts[category] ?? 0;
   }
 
+  int getEntityCount(String category, int entityId) {
+    return entityUnreadCounts[category]?[entityId] ?? 0;
+  }
+
   Future<void> fetchUnreadCounts() async {
-    debugPrint('🔔 Fetching notification unread counts from backend...');
-    final counts = await _service.getUnreadCounts();
-    debugPrint('🔔 Received unread counts: $counts');
-    if (counts != null) {
-      unreadCounts = counts;
+    debugPrint('🔔 Fetching notification unread counts & entity breakdown from backend...');
+    final rawData = await _service.getRawUnreadCountsData();
+    if (rawData != null) {
+      _parseRawData(rawData);
+      notifyListeners();
+    }
+  }
+
+  void _parseRawData(Map<String, dynamic> data) {
+    // 1. Parse Section Totals
+    if (data['sections'] is Map) {
+      final sections = data['sections'] as Map;
+      sections.forEach((key, value) {
+        if (value is num) {
+          unreadCounts[key.toString()] = value.toInt();
+        }
+      });
+    } else {
+      data.forEach((key, value) {
+        if (value is num) {
+          unreadCounts[key] = value.toInt();
+        }
+      });
+    }
+
+    // 2. Parse Entity Breakdown
+    if (data['entities'] is Map) {
+      final entities = data['entities'] as Map;
+      entities.forEach((secKey, secValue) {
+        if (secValue is Map) {
+          final Map<int, int> itemMap = {};
+          secValue.forEach((entId, count) {
+            final parsedId = int.tryParse(entId.toString());
+            if (parsedId != null && count is num) {
+              itemMap[parsedId] = count.toInt();
+            }
+          });
+          entityUnreadCounts[secKey.toString()] = itemMap;
+        }
+      });
+    }
+  }
+
+  Future<void> markEntityRead({required String section, required int entityId}) async {
+    // Optimistic local update
+    if (entityUnreadCounts[section] != null) {
+      final currentEntityCount = entityUnreadCounts[section]?[entityId] ?? 0;
+      if (currentEntityCount > 0) {
+        entityUnreadCounts[section]?[entityId] = 0;
+        unreadCounts[section] = (unreadCounts[section] ?? 0) - currentEntityCount;
+        if ((unreadCounts[section] ?? 0) < 0) unreadCounts[section] = 0;
+        notifyListeners();
+      }
+    }
+
+    final rawData = await _service.markEntityRead(section: section, entityId: entityId);
+    if (rawData != null) {
+      _parseRawData(rawData);
       notifyListeners();
     }
   }
 
   Future<void> markCategoryRead(String category) async {
     unreadCounts[category] = 0;
+    entityUnreadCounts[category]?.clear();
     notifyListeners();
 
     final updated = await _service.markCategoryRead(category);
@@ -37,12 +104,9 @@ class NotificationBadgeProvider extends ChangeNotifier {
     }
   }
 
-  void updateCountFromRealtime(String category, int count) {
-    unreadCounts[category] = count;
-    notifyListeners();
-  }
-
-  void incrementCategory(String category) {
+  void incrementEntityCategory(String category, int entityId) {
+    entityUnreadCounts[category] ??= {};
+    entityUnreadCounts[category]![entityId] = (entityUnreadCounts[category]![entityId] ?? 0) + 1;
     unreadCounts[category] = (unreadCounts[category] ?? 0) + 1;
     notifyListeners();
   }

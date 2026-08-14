@@ -66,14 +66,7 @@ class _HomeUserPageState extends State<HomeUserPage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: navProvider.currentIndex,
-        onTap: (index) {
-          if (index == 1) {
-            context.read<NotificationBadgeProvider>().markCategoryRead('company_responses');
-          } else if (index == 2) {
-            context.read<NotificationBadgeProvider>().markCategoryRead('conversations');
-          }
-          navProvider.setCurrentIndex(context, index, controller: _pageController);
-        },
+        onTap: (index) => navProvider.setCurrentIndex(context, index, controller: _pageController),
         items: List.generate(_navItems.length, (index) {
           final item = _navItems[index];
           final isActive = index == navProvider.currentIndex;
