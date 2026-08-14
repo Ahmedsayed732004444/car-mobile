@@ -1,0 +1,27 @@
+{
+  "output": {
+    "filePath": "repomix-output.md",
+    "style": "markdown",
+    "headerText": "Car Mediator Mobile App Codebase Summary",
+    "showLineNumbers": true
+  },
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      ".dart_tool/**",
+      ".idea/**",
+      ".vscode/**",
+      "build/**",
+      "android/**",
+      "ios/**",
+      "web/**",
+      "linux/**",
+      "windows/**",
+      "macos/**",
+      "*.lock",
+      "*.log",
+      ".git/**"
+    ]
+  }
+}
