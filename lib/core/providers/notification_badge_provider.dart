@@ -17,7 +17,9 @@ class NotificationBadgeProvider extends ChangeNotifier {
   }
 
   Future<void> fetchUnreadCounts() async {
+    debugPrint('🔔 Fetching notification unread counts from backend...');
     final counts = await _service.getUnreadCounts();
+    debugPrint('🔔 Received unread counts: $counts');
     if (counts != null) {
       unreadCounts = counts;
       notifyListeners();
