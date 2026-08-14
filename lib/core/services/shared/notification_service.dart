@@ -43,7 +43,7 @@ class NotificationService extends BaseService  {
 
   Future<Map<String, int>?> markCategoryRead(String category) async {
     try {
-      final response = await _apiService.postData('notifications/mark-category-read', {'category': category});
+      final response = await _apiService.postData('notifications/mark-category-read', body: {'category': category});
       if (response != null && response['success'] == true && response['data'] != null) {
         final Map<String, dynamic> data = response['data'];
         return data.map((key, value) => MapEntry(key, (value as num).toInt()));
