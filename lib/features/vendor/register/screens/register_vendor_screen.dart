@@ -204,6 +204,11 @@ class _RegisterVendorScreenState extends State<RegisterVendorScreen> {
     bool myValid = _formKey.currentState!.validate();
     if (myValid) {
 
+      if(myProvider.selectedCategoriesList == null || myProvider.selectedCategoriesList!.isEmpty){
+        ToastHelper.showInfo('الرجاء إختيار الخدمات');
+        return;
+      }
+
       if(myProvider.selectedCommercialRecordImage == null || myProvider.selectedCommercialRecordImage!.path.isEmpty){
         ToastHelper.showInfo('الرجاء إختيار صورة السجل التجاري');
         return;
