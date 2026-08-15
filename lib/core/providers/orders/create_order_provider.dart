@@ -31,6 +31,7 @@ class CreateOrderProvider extends ChangeNotifier {
   RequestResultModel? confirmShippingRequestResult;
 
   List<CityModel>? selectedCitiesRequestList = [];
+  List<BrandCarModel> selectedBrandsList = [];
 
   bool isCategoryHasBrand = false;
   String? descriptionRequest;
@@ -39,6 +40,7 @@ class CreateOrderProvider extends ChangeNotifier {
   // constructor provider
   CreateOrderProvider(this._requestService) {
     brandSelectedModel = null;
+    selectedBrandsList = [];
     final context = ContextUtils.globalContext;
     if (context != null) {
       context.read<DynamicFormProvider>().disposeControllers();
@@ -68,6 +70,15 @@ class CreateOrderProvider extends ChangeNotifier {
 
   void selectedBrand(BrandCarModel? model) {
     brandSelectedModel = model;
+    if (model != null && !selectedBrandsList.any((e) => e.id == model.id)) {
+      selectedBrandsList = [model];
+    }
+    notifyListeners();
+  }
+
+  void changeSelectedBrands(List<BrandCarModel> list) {
+    selectedBrandsList = list;
+    brandSelectedModel = list.isNotEmpty ? list.first : null;
     notifyListeners();
   }
 
@@ -101,7 +112,9 @@ class CreateOrderProvider extends ChangeNotifier {
   Map<String, dynamic> _buildCheckEligibleVendorsBody() {
     return {
       'categoryId': categorySelectedModel?.id ?? 0,
-      'brandId': brandSelectedModel?.id,
+      'brandId': selectedBrandsList.isNotEmpty
+          ? selectedBrandsList.map((e) => e.id).toList()
+          : (brandSelectedModel?.id != null ? [brandSelectedModel!.id] : null),
       'citiesIdsScope': selectedCitiesRequestList?.map((e) => e.id).toList(),
     };
   }
@@ -139,7 +152,9 @@ class CreateOrderProvider extends ChangeNotifier {
       'customerCityId': (myCitySelectedModel?.id ?? 0).toString(),
       'description': descriptionRequest ?? '',
       'citiesIdsScope': jsonEncode(selectedCitiesRequestList?.map((e) => e.id).toList()),
-      'brandId':( brandSelectedModel?.id).toString(),
+      'brandId': selectedBrandsList.isNotEmpty
+          ? jsonEncode(selectedBrandsList.map((e) => e.id).toList())
+          : (brandSelectedModel?.id != null ? brandSelectedModel!.id.toString() : ''),
     };
 
     Map<String, String> _customFields = {};
