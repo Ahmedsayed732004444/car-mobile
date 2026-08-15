@@ -120,4 +120,18 @@ class NotificationBadgeProvider extends ChangeNotifier {
     unreadCounts[category] = (unreadCounts[category] ?? 0) + 1;
     notifyListeners();
   }
+
+  void clearAll() {
+    unreadCounts = {
+      'customer_requests': 0,
+      'company_responses': 0,
+      'conversations': 0,
+    };
+    entityUnreadCounts = {
+      'conversations': {},
+      'customer_requests': {},
+      'company_responses': {},
+    };
+    notifyListeners();
+  }
 }
