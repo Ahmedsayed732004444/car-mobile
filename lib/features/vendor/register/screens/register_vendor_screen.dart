@@ -87,7 +87,7 @@ class _RegisterVendorScreenState extends State<RegisterVendorScreen> {
                     const SizedBox(width: 10,),
                     Expanded(child: CustomTextField(
                       label: 'رقم الجوال',
-                      hint: '05xxxxxxxx',
+                      hint: '512345678',
                       controller: phoneNumberController,
                       validator: (value) => FormValidatorUtils.phoneValidator(value, isRequired: true),
                       fillColor: AppColor.secondaryColor,
@@ -219,9 +219,14 @@ class _RegisterVendorScreenState extends State<RegisterVendorScreen> {
         return;
       }
 
+      String phone = phoneNumberController.text.trim();
+      if (!phone.startsWith('0')) {
+        phone = '0$phone';
+      }
+
       await myProvider.registerVendor(context,{
         'companyNameAr' : nameCompanyArController.text,
-        'phoneNumber' : phoneNumberController.text,
+        'phoneNumber' : phone,
         'commercialRecord' : commercialRecordController.text,
         'dateExpireCommercialRecord' : dateExpireCommercialRecordController.text,
         'categoriesIds' : jsonEncode(myProvider.selectedCategoriesList?.map((e) => e.id).toList()),

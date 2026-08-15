@@ -101,16 +101,16 @@ class FormValidatorUtils {
       String? value, {
         bool isRequired = false,
       }) {
-    if (isRequired && (value == null || value.isEmpty)) {
-      return 'الرجاء إدخال رقم الهاتف';
+    if (isRequired && (value == null || value.trim().isEmpty)) {
+      return 'الرجاء إدخال رقم الجوال';
     }
 
-    if (value != null && value.isNotEmpty) {
-      // يقبل رقم يبدأ بـ 05 ويليه 8 أرقام (يعني المجموع 10)
-      final phoneRegex = RegExp(r'^05\d{8}$');
+    if (value != null && value.trim().isNotEmpty) {
+      final val = value.trim();
+      final phoneRegex = RegExp(r'^(05\d{8}|5\d{8})$');
 
-      if (!phoneRegex.hasMatch(value)) {
-        return 'رقم الهاتف يجب أن يتكون من 10 أرقام ويبدأ بـ 05';
+      if (!phoneRegex.hasMatch(val)) {
+        return 'رقم الجوال يجب أن يكون 9 أرقام يبدأ بـ 5 (مثل: 512345678)';
       }
     }
 

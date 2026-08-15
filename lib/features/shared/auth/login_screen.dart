@@ -163,14 +163,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               fontWeight: FontWeight.w600,
                             ),
                                 onChanged: (value){
-                                  if(value.toString().trim().length == 10){
+                                  final val = value.toString().trim();
+                                  if(val.length == 10 || (val.startsWith('5') && val.length == 9)){
                                     Helper.dismissKeyBoard();
                                   }
                                 },
                             decoration: const InputDecoration(
                               contentPadding: EdgeInsets.all(5),
                               counterText: '',
-                              hintText: 'Ex: 05xxxxxxxx',
+                              hintText: '512345678',
                               hintStyle: TextStyle(
                                   fontSize: 15, color: AppColor.greyShade3),
                               enabledBorder: OutlineInputBorder(
@@ -237,8 +238,13 @@ class _LoginScreenState extends State<LoginScreen> {
         return;
       }
 
+      String phone = phoneNumberController.text.toString().trim();
+      if (!phone.startsWith('0')) {
+        phone = '0$phone';
+      }
+
       await myProvider.register(context, body: {
-        'phoneNumber': phoneNumberController.text.toString().trim(),
+        'phoneNumber': phone,
       });
     }
   }
