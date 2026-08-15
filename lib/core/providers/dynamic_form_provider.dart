@@ -57,6 +57,9 @@ class DynamicFormProvider with ChangeNotifier {
     if (fieldName == 'car_name') {
       return _isArabic ? 'اسم السيارة' : 'Car Name';
     }
+    if (fieldName == 'budget') {
+      return _isArabic ? 'الميزانه' : 'Budget';
+    }
 
     final _list = context.read<CacheProvider>().customFieldsList;
 

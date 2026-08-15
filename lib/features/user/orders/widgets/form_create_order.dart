@@ -256,6 +256,24 @@ class FormCreateOrderWidget extends StatelessWidget {
                 ),
             ],
           ),
+        if (_createOrderProvider.categorySelectedModel?.catNameAr.contains('جديد') ?? false)
+          Padding(
+            padding: const EdgeInsets.only(top: 16),
+            child: ContainerFieldsWidget(
+              title: 'الميزانه',
+              children: [
+                CustomTextField(
+                  label: '',
+                  hint: 'مثال ( من 10 الاف الى 20 الف )',
+                  controller: context.read<DynamicFormProvider>().getController('budget'),
+                  validator: (value) => FormValidatorUtils.textValidator(
+                    value,
+                    isRequired: false,
+                  ),
+                ),
+              ],
+            ),
+          ),
         if (_createOrderProvider.categorySelectedModel?.catNameAr.contains('قطع') ?? false)
           Padding(
             padding: const EdgeInsets.only(top: 16),
@@ -411,8 +429,10 @@ class _buildFieldsByType extends StatelessWidget {
           final isFileField = field.fieldType == CustomFieldTypeEnum.file.name;
           final isHandledSeparately = field.fieldName == 'part_name' ||
               field.fieldName == 'car_name' ||
+              field.fieldName == 'budget' ||
               field.fieldName == 'spare_parts_field' ||
               field.labelAr.contains('قطعة') ||
+              field.labelAr.contains('ميزان') ||
               field.labelAr.contains('سيارة');
           return (showFileFields ? isFileField : !isFileField) && !isHandledSeparately;
         }).toList();
