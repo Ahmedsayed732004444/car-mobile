@@ -70,9 +70,7 @@ class CreateOrderProvider extends ChangeNotifier {
 
   void selectedBrand(BrandCarModel? model) {
     brandSelectedModel = model;
-    if (model != null && !selectedBrandsList.any((e) => e.id == model.id)) {
-      selectedBrandsList = [model];
-    }
+    selectedBrandsList = model != null ? [model] : [];
     notifyListeners();
   }
 

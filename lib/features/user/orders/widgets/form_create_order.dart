@@ -224,17 +224,36 @@ class FormCreateOrderWidget extends StatelessWidget {
           ContainerFieldsWidget(
             title: 'الموديل',
             children: [
-              InkWell(
-                onTap: () => _showBrandsBottomSheet(context, _cacheProvider, _createOrderProvider),
-                child: InputDecorator(
-                  decoration: customDropdownDecoratorProps(label: 'الموديل', hint: 'إختر الموديل').dropdownSearchDecoration!,
-                  child: BrandDropDownBuilderMultiSelectionWidget(
-                    selectedItems: _createOrderProvider.selectedBrandsList,
-                    hint: 'إختر الموديل',
-                    totalBrandsCount: _cacheProvider.brandsCarsList.length,
+              if (_createOrderProvider.categorySelectedModel?.catNameAr.contains('جديد') ?? false)
+                InkWell(
+                  onTap: () => _showBrandsBottomSheet(context, _cacheProvider, _createOrderProvider),
+                  child: InputDecorator(
+                    decoration: customDropdownDecoratorProps(label: 'الموديل', hint: 'إختر الموديل').dropdownSearchDecoration!,
+                    child: BrandDropDownBuilderMultiSelectionWidget(
+                      selectedItems: _createOrderProvider.selectedBrandsList,
+                      hint: 'إختر الموديل',
+                      totalBrandsCount: _cacheProvider.brandsCarsList.length,
+                    ),
                   ),
+                )
+              else
+                DropdownSearch<BrandCarModel>(
+                  dropdownDecoratorProps: customDropdownDecoratorProps(
+                      label: 'الموديل', hint: 'إختر الموديل'),
+                  popupProps: popupPropsBottomSheet<BrandCarModel>(
+                    titleBottomSheet: 'الموديل',
+                    itemBuilder: (BuildContext context, BrandCarModel item, bool isSelected) {
+                      return CustomContainerListTileWidget(
+                        title: _isArabic ? item.brandCarNameAr : item.brandCarNameEn,
+                      );
+                    },
+                  ),
+                  items: _cacheProvider.brandsCarsList,
+                  selectedItem: _createOrderProvider.brandSelectedModel,
+                  itemAsString: (BrandCarModel? u) => (_isArabic ? u?.brandCarNameAr : u?.brandCarNameEn) ?? '',
+                  validator: FormValidatorUtils.objectValidator,
+                  onChanged: (BrandCarModel? selection) => _createOrderProvider.selectedBrand(selection),
                 ),
-              ),
             ],
           ),
         _buildFieldsByType(
