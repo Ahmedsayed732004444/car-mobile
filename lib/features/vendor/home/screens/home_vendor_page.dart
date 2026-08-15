@@ -81,13 +81,13 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
               Expanded(
                 flex: 1,
                 child: SectionBadgeWidget(
-                  categoryKey: 'company_responses',
+                  categoryKey: 'conversations',
                   child: DashboardItemHome(
-                    title: 'ردود الشركة',
-                    subTitle: 'ردود الطلبات',
-                    icon: const Icon(Icons.reply_all_outlined, color: AppColor.primaryColor, size: 32),
+                    title: 'المحادثات',
+                    subTitle: 'محادثاتي',
+                    icon: const Icon(Icons.chat, color: AppColor.primaryColor, size: 32),
                     onTap: (){
-                      navigationPush(context, const MyResponseRequestScreen());
+                      navigationPush(context, const VendorConversationScreen());
                     },
                   ),
                 ),
@@ -118,13 +118,13 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
                 Expanded(
                   flex: 1,
                   child: SectionBadgeWidget(
-                    categoryKey: 'conversations',
+                    categoryKey: 'company_responses',
                     child: DashboardItemHome(
-                      title: 'المحادثات',
-                      subTitle: 'محادثاتي',
-                      icon: const Icon(Icons.chat, color: AppColor.primaryColor, size: 32),
+                      title: 'ردود الشركة',
+                      subTitle: 'ردود الطلبات',
+                      icon: const Icon(Icons.reply_all_outlined, color: AppColor.primaryColor, size: 32),
                       onTap: (){
-                        navigationPush(context, const VendorConversationScreen());
+                        navigationPush(context, const MyResponseRequestScreen());
                       },
                     ),
                   ),
