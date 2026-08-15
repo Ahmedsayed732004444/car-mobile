@@ -263,9 +263,9 @@ class FormCreateOrderWidget extends StatelessWidget {
               title: 'تفاصيل قطع الغيار',
               children: [
                 CustomTextField(
-                  label: 'اسم السيارة',
-                  hint: 'إكتب اسم وموديل السيارة (مثال: تويوتا كامري 2022)',
-                  controller: context.read<DynamicFormProvider>().getController('car_name'),
+                  label: 'اسم القطعة',
+                  hint: 'اسم القطعة',
+                  controller: context.read<DynamicFormProvider>().getController('part_name'),
                   validator: (value) => FormValidatorUtils.textValidator(
                     value,
                     isRequired: true,
@@ -275,9 +275,9 @@ class FormCreateOrderWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 CustomTextField(
-                  label: 'اسم القطعة',
-                  hint: 'إكتب اسم القطعة المطلوبة (مثال: مساعدين أمامية)',
-                  controller: context.read<DynamicFormProvider>().getController('part_name'),
+                  label: 'اسم السيارة',
+                  hint: 'كامري 2010',
+                  controller: context.read<DynamicFormProvider>().getController('car_name'),
                   validator: (value) => FormValidatorUtils.textValidator(
                     value,
                     isRequired: true,
