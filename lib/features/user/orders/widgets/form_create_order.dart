@@ -28,11 +28,15 @@ class FormCreateOrderWidget extends StatelessWidget {
     super.key,
     required this.customFieldsList,
     required this.descriptionController,
+    required this.partNameController,
+    required this.carNameController,
     required this.myCityController,
   });
 
   final List<CustomFieldModel> customFieldsList;
   final TextEditingController descriptionController;
+  final TextEditingController partNameController;
+  final TextEditingController carNameController;
   final TextEditingController myCityController;
 
   void _showBrandsBottomSheet(
@@ -256,6 +260,40 @@ class FormCreateOrderWidget extends StatelessWidget {
                 ),
             ],
           ),
+        const SizedBox(height: 16),
+        ContainerFieldsWidget(
+          title: 'اسم القطعة',
+          children: [
+            CustomTextField(
+              label: 'اسم القطعة',
+              hint: 'إكتب اسم القطعة المطلوبة...',
+              controller: partNameController,
+              validator: (value) => FormValidatorUtils.textValidator(
+                value,
+                isRequired: true,
+                minLength: 2,
+                maxLength: 255,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        ContainerFieldsWidget(
+          title: 'اسم السيارة',
+          children: [
+            CustomTextField(
+              label: 'اسم السيارة',
+              hint: 'إكتب اسم السيارة...',
+              controller: carNameController,
+              validator: (value) => FormValidatorUtils.textValidator(
+                value,
+                isRequired: true,
+                minLength: 2,
+                maxLength: 255,
+              ),
+            ),
+          ],
+        ),
         _buildFieldsByType(
           customFieldsList: customFieldsList,
           isArabic: _isArabic,

@@ -22,12 +22,16 @@ class CreateOrderScreen extends StatefulWidget {
 class _CreateOrderScreenState extends State<CreateOrderScreen> {
   final _formKey = GlobalKey<FormState>();
   final descriptionController = TextEditingController();
+  final partNameController = TextEditingController();
+  final carNameController = TextEditingController();
   final myCityController = TextEditingController();
 
   @override
   void dispose() {
     super.dispose();
     descriptionController.dispose();
+    partNameController.dispose();
+    carNameController.dispose();
     myCityController.dispose();
   }
 
@@ -47,6 +51,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
                 FormCreateOrderWidget(
                   customFieldsList: widget.customFieldsList,
                   descriptionController: descriptionController,
+                  partNameController: partNameController,
+                  carNameController: carNameController,
                   myCityController: myCityController,
                 ),
               ],
@@ -55,6 +61,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
 
           if (_formKey.currentState!.validate()) {
             _createOrderProvider.descriptionRequest = descriptionController.text.toString();
+            _createOrderProvider.partNameRequest = partNameController.text.toString();
+            _createOrderProvider.carNameRequest = carNameController.text.toString();
             navigationPush(context, SendOrderScreen());
           }
         }));
