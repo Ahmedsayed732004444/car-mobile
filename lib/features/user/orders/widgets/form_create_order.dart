@@ -263,14 +263,13 @@ class FormCreateOrderWidget extends StatelessWidget {
               title: 'تفاصيل قطع الغيار',
               children: [
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Text(
-                      'اسم القطعة',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.primaryColor,
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'اسم القطعة',
+                        style: txtBold04,
                       ),
                     ),
                     const SizedBox(height: 6),
@@ -289,14 +288,13 @@ class FormCreateOrderWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Text(
-                      'اسم السيارة',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: AppColor.primaryColor,
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        'اسم السيارة',
+                        style: txtBold04,
                       ),
                     ),
                     const SizedBox(height: 6),

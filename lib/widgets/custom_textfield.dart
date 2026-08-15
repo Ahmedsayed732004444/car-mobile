@@ -80,8 +80,8 @@ class CustomTextField extends StatelessWidget {
       textInputAction: textInputAction,
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        labelText: label,
-        hintText: hint,
+        labelText: label.isNotEmpty ? label : null,
+        hintText: hint.isNotEmpty ? hint : null,
         fillColor: fillColor,
         filled: filled,
         labelStyle: TextStyle(
