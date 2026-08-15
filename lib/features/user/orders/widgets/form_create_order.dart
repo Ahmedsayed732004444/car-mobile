@@ -83,7 +83,7 @@ class FormCreateOrderWidget extends StatelessWidget {
               maxLines: 8,
               controller: descriptionController,
               validator: (value) => FormValidatorUtils.textValidator(value,
-                  isRequired: true, minLength: 15, maxLength: 4000),
+                  isRequired: true, minLength: 3, maxLength: 4000),
               maxLength: 4000,
             ),
           ],

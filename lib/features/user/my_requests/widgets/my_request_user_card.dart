@@ -4,6 +4,9 @@ import 'package:car_mediator_mobile/widgets/components.dart';
 
 import 'package:car_mediator_mobile/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../../../core/providers/users/my_request_user_provider.dart';
+import 'status_my_request_widget.dart';
 
 import '../../../../core/utils/constants/colors_constants.dart';
 import '../../../../core/utils/date_parser_utils.dart';
@@ -32,26 +35,57 @@ class MyRequestUserCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Expanded(
-                    flex: 1,
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        'رقم الطلب :  ${Utils.numberFormatting(model.requestId)}',
-                        style: txtMedium04,
-                      ),
-                    )),
-                const SizedBox(
-                  width: 5,
+                Text(
+                  'رقم الطلب :  ${Utils.numberFormatting(model.requestId)}',
+                  style: txtMedium04,
                 ),
-                Expanded(
-                    flex: 1,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: RequestStatusWidget(
-                        status: model.requestStatus,
+                const Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    context.read<MyRequestUserProvider>().statusMyRequestSelected = model.requestStatus;
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
                       ),
-                    )),
+                      builder: (context) {
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom,
+                            left: 16,
+                            right: 16,
+                            top: 24,
+                          ),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                StatusMyRequestWidget(
+                                  status: model.requestStatus,
+                                  requestId: model.requestId,
+                                ),
+                                const SizedBox(height: 24),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                  child: Text(
+                    'إنهاء الطلب',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                      fontSize: SizeConfig.widthResponsive(0.04),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 10),
+                RequestStatusWidget(
+                  status: model.requestStatus,
+                ),
               ],
             ),
             const Divider(

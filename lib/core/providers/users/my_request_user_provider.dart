@@ -100,6 +100,16 @@ class MyRequestUserProvider extends ChangeNotifier {
 
       if(_response != null && _response.success){
         statusMyRequestSelected = status;
+        
+        final index = requestModelList.indexWhere((element) => element.requestId == body['id']);
+        if (index != -1) {
+          requestModelList[index] = requestModelList[index].copyWith(requestStatus: status);
+        }
+        if (detailsMyRequestModel != null && detailsMyRequestModel!.requestId == body['id']) {
+          detailsMyRequestModel = detailsMyRequestModel!.copyWith(requestStatus: status);
+        }
+        notifyListeners();
+        
         ToastHelper.showSuccess(_response.message ?? '');
       }else{
         ToastHelper.showError(_response?.message ?? '');

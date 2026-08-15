@@ -125,6 +125,52 @@ class RequestModel {
       countResponse: json?['count_response'] ?? 0,
     );
   }
+
+  RequestModel copyWith({
+    int? requestId,
+    int? responseId,
+    String? catNameAr,
+    String? requestDate,
+    String? responseDate,
+    String? cityCustomerNameAr,
+    String? description,
+    List<String>? cities,
+    List<String>? brandsNames,
+    List<Map<String, dynamic>>? fields,
+    List<Map<String, dynamic>>? images,
+    String? responseStatus,
+    String? requestStatus,
+    String? userName,
+    String? userPhone,
+    String? userLogo,
+    double? priceResponse,
+    String? noteResponse,
+    String? warrantyResponse,
+    int? countResponse,
+  }) {
+    return RequestModel(
+      requestId: requestId ?? this.requestId,
+      responseId: responseId ?? this.responseId,
+      catNameAr: catNameAr ?? this.catNameAr,
+      requestDate: requestDate ?? this.requestDate,
+      responseDate: responseDate ?? this.responseDate,
+      cityCustomerNameAr: cityCustomerNameAr ?? this.cityCustomerNameAr,
+      description: description ?? this.description,
+      cities: cities ?? this.cities,
+      brandsNames: brandsNames ?? this.brandsNames,
+      fields: fields ?? this.fields,
+      images: images ?? this.images,
+      responseStatus: responseStatus ?? this.responseStatus,
+      requestStatus: requestStatus ?? this.requestStatus,
+      userName: userName ?? this.userName,
+      userPhone: userPhone ?? this.userPhone,
+      userLogo: userLogo ?? this.userLogo,
+      priceResponse: priceResponse ?? this.priceResponse,
+      noteResponse: noteResponse ?? this.noteResponse,
+      warrantyResponse: warrantyResponse ?? this.warrantyResponse,
+      countResponse: countResponse ?? this.countResponse,
+    );
+  }
 }
 
 

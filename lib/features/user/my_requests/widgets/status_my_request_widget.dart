@@ -11,8 +11,9 @@ import '../../../../core/providers/users/my_request_user_provider.dart';
 import '../../../../core/utils/constants/enumeration.dart';
 
 class StatusMyRequestWidget extends StatelessWidget {
-  const StatusMyRequestWidget({super.key, required this.status});
+  const StatusMyRequestWidget({super.key, required this.status, this.requestId});
   final String status;
+  final int? requestId;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class StatusMyRequestWidget extends StatelessWidget {
             onTap: () {
               DialogUtils().showConfirmDialog(context, message: 'تأكيد حالة الطلب', confirm: (){
                provider.updateResponseRequest(body: {
-                 'id': provider.detailsMyRequestModel?.requestId ?? 0,
+                 'id': requestId ?? provider.detailsMyRequestModel?.requestId ?? 0,
                  'status': status.name,
                }, status: status.name);
               });
@@ -50,7 +51,7 @@ class StatusMyRequestWidget extends StatelessWidget {
                     onChanged: (value) {
                       DialogUtils().showConfirmDialog(context, message: 'تأكيد حالة الطلب', confirm: (){
                         provider.updateResponseRequest(body: {
-                          'id': provider.detailsMyRequestModel?.requestId ?? 0,
+                          'id': requestId ?? provider.detailsMyRequestModel?.requestId ?? 0,
                           'status': status.name,
                         }, status: status.name);
                       });
