@@ -59,6 +59,14 @@ class SendRangeCard extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Text(
+                              'المدن',
+                              style: TextStyle(
+                                color: AppColor.primaryColor,
+                                fontSize: SizeConfig.widthResponsive(0.05),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             InkWell(
                               onTap: () {
                                 setState(() {
@@ -72,6 +80,14 @@ class SendRangeCard extends StatelessWidget {
                               },
                               child: Row(
                                 children: [
+                                  const Text(
+                                    'تحديد الكل',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
                                   Checkbox(
                                     value: isAllSelected,
                                     activeColor: AppColor.primaryColor,
@@ -89,23 +105,7 @@ class SendRangeCard extends StatelessWidget {
                                       });
                                     },
                                   ),
-                                  const Text(
-                                    'تحديد الكل',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
                                 ],
-                              ),
-                            ),
-                            Text(
-                              'المدن',
-                              style: TextStyle(
-                                color: AppColor.primaryColor,
-                                fontSize: SizeConfig.widthResponsive(0.05),
-                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],

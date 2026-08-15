@@ -80,6 +80,14 @@ class FormCreateOrderWidget extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Text(
+                              'الموديل',
+                              style: TextStyle(
+                                color: AppColor.primaryColor,
+                                fontSize: SizeConfig.widthResponsive(0.05),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             InkWell(
                               onTap: () {
                                 setState(() {
@@ -93,6 +101,14 @@ class FormCreateOrderWidget extends StatelessWidget {
                               },
                               child: Row(
                                 children: [
+                                  const Text(
+                                    'البحث في جميع الشركات',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
                                   Checkbox(
                                     value: isAllSelected,
                                     activeColor: AppColor.primaryColor,
@@ -110,23 +126,7 @@ class FormCreateOrderWidget extends StatelessWidget {
                                       });
                                     },
                                   ),
-                                  const Text(
-                                    'البحث في جميع الشركات',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
                                 ],
-                              ),
-                            ),
-                            Text(
-                              'الموديل',
-                              style: TextStyle(
-                                color: AppColor.primaryColor,
-                                fontSize: SizeConfig.widthResponsive(0.05),
-                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
