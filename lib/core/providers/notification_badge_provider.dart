@@ -22,6 +22,16 @@ class NotificationBadgeProvider extends ChangeNotifier {
     if (entityId != null) {
       return entityUnreadCounts[category]?[entityId] ?? 0;
     }
+    // Main section count from outside:
+    // Sum up all unread entity counts for this section if any exist
+    final entityMap = entityUnreadCounts[category];
+    if (entityMap != null && entityMap.isNotEmpty) {
+      int sum = 0;
+      entityMap.forEach((_, count) {
+        if (count > 0) sum += count;
+      });
+      return sum;
+    }
     return unreadCounts[category] ?? 0;
   }
 
