@@ -47,7 +47,7 @@ class _HomeUserPageState extends State<HomeUserPage> {
     super.initState();
     FcmService.onMessage();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<NotificationBadgeProvider>().fetchUnreadCounts();
+      context.read<NotificationBadgeProvider>().startRealTimePolling();
     });
   }
 
