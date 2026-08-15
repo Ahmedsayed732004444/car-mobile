@@ -49,15 +49,23 @@ class DynamicFormProvider with ChangeNotifier {
   }
 
   String getLabelName(BuildContext context, String fieldName) {
-    final _list = context.read<CacheProvider>().customFieldsList;
     final _isArabic = context.read<AppLanguageProvider>().isArabic;
+
+    if (fieldName == 'part_name') {
+      return _isArabic ? 'اسم القطعة' : 'Part Name';
+    }
+    if (fieldName == 'car_name') {
+      return _isArabic ? 'اسم السيارة' : 'Car Name';
+    }
+
+    final _list = context.read<CacheProvider>().customFieldsList;
 
     for (var field in _list) {
       if (field.fieldName == fieldName) {
         return _isArabic ? field.labelAr : field.labelEn;
       }
     }
-    return '';
+    return fieldName;
   }
 
   bool isFileByFieldName(BuildContext context, String fieldName) {
