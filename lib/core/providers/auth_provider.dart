@@ -1,5 +1,3 @@
-
-
 import 'dart:ffi';
 import 'dart:io';
 
@@ -18,6 +16,7 @@ import '../helpers/helpers.dart';
 import '../helpers/toast_helper.dart';
 import '../services/shared/auth_service.dart';
 import 'bottom_navigation_bar_provider.dart';
+import 'notification_badge_provider.dart';
 
 class AuthProvider extends ChangeNotifier{
   final AuthService _authService;
@@ -115,6 +114,7 @@ class AuthProvider extends ChangeNotifier{
       ]);
 
       if (context.mounted) {
+        context.read<NotificationBadgeProvider>().clearAll();
         context.read<BottomNavigationBarProvider>().setCurrentIndex(context, 0);
         navigationPushAndRemoveUntil(context, InitCache(userRole: null,));
       }
@@ -135,36 +135,7 @@ class AuthProvider extends ChangeNotifier{
     }
   }
 
-
-  // Future postDataWithMultiPart(BuildContext context, Map map ,File? file ,String urlPage) async {
-  //   try{
-  //     registerUserModel = null;
-  //     loading = true;
-  //     notifyListeners();
-  //     dynamic response = await RestApiServices().postDataWithMultipartRequest(context, map,file, urlPage);
-  //     if(response !=null){
-  //       if(response['success']){
-  //         registerUserModel = LoginUserModel.fromJson(response);
-  //       }else{
-  //         DialogUtils().showAdvancedDialog(context,title: AppLocalizations.of(context).trans('error') ?? '',
-  //             description: response['message'].toString(),
-  //             iconPath: AssetsPath.icon_error,
-  //             onTabCancel: (){
-  //               Navigator.of(context).pop();
-  //             });
-  //       }
-  //     }
-  //     loading = false;
-  //     notifyListeners();
-  //   }catch(ex){
-  //     loading = false;
-  //     notifyListeners();
-  //     print('AuthProvider-----------postDataWithMultiPart----Error Exception ----->${ex}');
-  //   }
-  // }
-
   Future initialization() async{
     uploadLogo = null;
   }
 }
-

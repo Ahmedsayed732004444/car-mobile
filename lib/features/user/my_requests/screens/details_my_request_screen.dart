@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/data_sources/local/secure_storage.dart';
 import '../../../../core/data_sources/remote/api_path.dart';
+import '../../../../core/providers/notification_badge_provider.dart';
 import '../../../../core/providers/users/my_request_user_provider.dart';
 import '../../../../core/utils/date_parser_utils.dart';
 import '../../../../core/utils/size_config.dart';
@@ -30,6 +31,7 @@ class _DetailsMyRequestScreenState extends State<DetailsMyRequestScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      context.read<NotificationBadgeProvider>().markEntityRead(section: 'company_responses', entityId: widget.requestId);
       final provider = Provider.of<MyRequestUserProvider>(context, listen: false);
       await provider.getMyRequestById(requestId: widget.requestId);
     });

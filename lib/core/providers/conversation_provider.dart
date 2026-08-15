@@ -162,6 +162,7 @@ class ConversationProvider extends ChangeNotifier {
   }
 
   Future<void> sendMessage(BuildContext context,{required Map<String, String> body,}) async {
+    if (_isLoadingSend) return;
     _toggleLoadingSend();
     try {
       final _response = await _conversationService.sendMessage(body: body, file: fileImage);

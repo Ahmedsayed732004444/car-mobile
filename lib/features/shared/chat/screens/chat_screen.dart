@@ -14,6 +14,7 @@ import '../../../../core/data_sources/remote/api_path.dart';
 import '../../../../core/localization/app_language_provider.dart';
 import '../../../../core/providers/cache_provider.dart';
 import '../../../../core/providers/conversation_provider.dart';
+import '../../../../core/providers/notification_badge_provider.dart';
 import '../../../../core/providers/shipping_provider.dart';
 import '../../../../core/styles/styles.dart';
 import '../../../../core/utils/connection_utils.dart';
@@ -62,6 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      context.read<NotificationBadgeProvider>().markEntityRead(section: 'conversations', entityId: widget.conversationId);
       final prov = Provider.of<ConversationProvider>(context, listen: false);
       prov.initProvider();
       await prov.loadInitialMessages(conversationId: widget.conversationId);
@@ -263,7 +265,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.camera_alt, color: AppColor.primaryColor),
-                      onPressed: () async {
+                      onPressed: provider.isLoadingSend ? null : () async {
                         ImagePickerBottomSheet.show(context, (picked) async {
                           if (picked != null) {
                             provider.changeSelectedConversationImage(picked);
@@ -275,7 +277,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     const SizedBox(width: 5),
                     IconButton(
                       icon: provider.isLoadingSend ? const CustomLoading(radius: 10) : const Icon(Icons.send, color: AppColor.primaryColor),
-                      onPressed: () async {
+                      onPressed: provider.isLoadingSend ? null : () async {
                         await onSendMessage(provider);
                       },
                     )

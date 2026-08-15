@@ -18,6 +18,7 @@ import '../../../../widgets/components.dart';
 import '../../../../widgets/custom_empty_widget.dart';
 import '../../../../widgets/custom_loading.dart';
 import '../../../../widgets/images/custom_image.dart';
+import '../../../../widgets/section_badge_widget.dart';
 import '../../../shared/chat/screens/chat_screen.dart';
 
 class VendorConversationScreen extends StatefulWidget {
@@ -87,40 +88,46 @@ class _VendorConversationScreenState extends State<VendorConversationScreen> {
               padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
               itemBuilder: (context, index) {
                 if (index < provider.conversationModelList.length) {
+                  final item = provider.conversationModelList[index];
                   return Padding(padding: const EdgeInsets.only(bottom: 12),
                     child: Material(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
-                      child: ListTile(
-                        onTap: () async {
-                          if(! await ConnectionUtils.hasInternetConnection()){
-                            DialogUtils().showNoInternetDialog(context);
-                            return;
-                          }
-                          navigationPush(context, ChatScreen(
-                            conversationId: provider.conversationModelList[index].conversationId ?? 0,
-                            requestId: provider.conversationModelList[index].requestId ?? 0,
-                            responseId: provider.conversationModelList[index].responseId ?? 0,
-                            vendorId: provider.conversationModelList[index].vendorId ?? 0,
-                            receiverName: provider.conversationModelList[index].receiverName ?? '',
-                            receiverLogo: provider.conversationModelList[index].receiverLogo ?? '',
-                            myUserId: context.read<AuthProvider>().currentUseModel?.id ?? 0,
-                            isVendor: true,
-                          ));
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                      child: SectionBadgeWidget(
+                        categoryKey: 'conversations',
+                        entityId: item.conversationId,
+                        offset: const Offset(12, 12),
+                        child: ListTile(
+                          onTap: () async {
+                            if(! await ConnectionUtils.hasInternetConnection()){
+                              DialogUtils().showNoInternetDialog(context);
+                              return;
+                            }
+                            navigationPush(context, ChatScreen(
+                              conversationId: item.conversationId ?? 0,
+                              requestId: item.requestId ?? 0,
+                              responseId: item.responseId ?? 0,
+                              vendorId: item.vendorId ?? 0,
+                              receiverName: item.receiverName ?? '',
+                              receiverLogo: item.receiverLogo ?? '',
+                              myUserId: context.read<AuthProvider>().currentUseModel?.id ?? 0,
+                              isVendor: true,
+                            ));
+                          },
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                          leading: CustomImageWidget(
+                            urlImage: item.receiverLogo,
+                            width: SizeConfig.widthResponsive(0.15),
+                            height: SizeConfig.widthResponsive(0.15),
+                            radius: 60,
+                          ),
+                          title: Text('${item.receiverName}', style: txtSemiBold035,),
+                          subtitle: Text('رقم الطلب : ${Utils.numberFormatting(item.requestId)}'),
+                          trailing: const Icon(Icons.arrow_forward_ios_rounded, color: AppColor.primaryColor, size: 18,),
                         ),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        leading: CustomImageWidget(
-                          urlImage: provider.conversationModelList[index].receiverLogo,
-                          width: SizeConfig.widthResponsive(0.15),
-                          height: SizeConfig.widthResponsive(0.15),
-                          radius: 60,
-                        ),
-                        title: Text('${provider.conversationModelList[index].receiverName}', style: txtSemiBold035,),
-                        subtitle: Text('رقم الطلب : ${Utils.numberFormatting(provider.conversationModelList[index].requestId)}'),
-                        trailing: const Icon(Icons.arrow_forward_ios_rounded, color: AppColor.primaryColor, size: 18,),
                       ),
                     ),);
                 } else {

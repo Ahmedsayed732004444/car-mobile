@@ -3,6 +3,7 @@ import 'package:car_mediator_mobile/widgets/components.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/providers/notification_badge_provider.dart';
 import '../../../../core/providers/users/my_request_user_provider.dart';
 import '../../../../core/providers/users/responses_my_request_provider.dart';
 import '../../../../core/styles/styles.dart';
@@ -37,6 +38,7 @@ class _ResponsesMyRequestScreenState extends State<ResponsesMyRequestScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      context.read<NotificationBadgeProvider>().markEntityRead(section: 'company_responses', entityId: widget.requestId);
       final provider = Provider.of<ResponsesMyRequestProvider>(context, listen: false);
       provider.resetPagination();
       await provider.getResponsesMyRequest(requestId: widget.requestId);

@@ -26,4 +26,87 @@ class NotificationService extends BaseService  {
       return null;
     }
   }
+
+  Future<Map<String, int>?> getUnreadCounts() async {
+    try {
+      final response = await _apiService.getData('notifications/unread-counts');
+      if (response != null && response['success'] == true && response['data'] != null) {
+        final Map<String, dynamic> data = response['data'];
+        final Map<String, int> result = {};
+        data.forEach((key, value) {
+          if (value is num) {
+            result[key] = value.toInt();
+          }
+        });
+        if (data['sections'] is Map) {
+          (data['sections'] as Map).forEach((key, value) {
+            if (value is num) {
+              result[key.toString()] = value.toInt();
+            }
+          });
+        }
+        return result;
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error fetching unread counts: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getRawUnreadCountsData() async {
+    try {
+      final response = await _apiService.getData('notifications/unread-counts');
+      if (response != null && response['success'] == true && response['data'] != null) {
+        return response['data'] as Map<String, dynamic>;
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error fetching raw unread counts: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, dynamic>?> markEntityRead({required String section, required int entityId}) async {
+    try {
+      final response = await _apiService.postData(
+        'notifications/mark-entity-read',
+        body: {'section': section, 'entity_id': entityId},
+      );
+      if (response != null && response['success'] == true && response['data'] != null) {
+        return response['data'] as Map<String, dynamic>;
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error marking entity read: $e');
+      return null;
+    }
+  }
+
+  Future<Map<String, int>?> markCategoryRead(String category) async {
+    try {
+      final response = await _apiService.postData('notifications/mark-category-read', body: {'category': category});
+      if (response != null && response['success'] == true && response['data'] != null) {
+        final Map<String, dynamic> data = response['data'];
+        final Map<String, int> result = {};
+        data.forEach((key, value) {
+          if (value is num) {
+            result[key] = value.toInt();
+          }
+        });
+        if (data['sections'] is Map) {
+          (data['sections'] as Map).forEach((key, value) {
+            if (value is num) {
+              result[key.toString()] = value.toInt();
+            }
+          });
+        }
+        return result;
+      }
+      return null;
+    } catch (e) {
+      debugPrint('Error marking category read: $e');
+      return null;
+    }
+  }
 }

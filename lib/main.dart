@@ -24,6 +24,7 @@ import 'core/providers/common_provider.dart';
 import 'core/providers/conversation_provider.dart';
 import 'core/providers/dynamic_form_provider.dart';
 import 'core/providers/home/home_user_provider.dart';
+import 'core/providers/notification_badge_provider.dart';
 import 'core/providers/notification_provider.dart';
 import 'core/providers/orders/create_order_provider.dart';
 import 'core/providers/shipping_provider.dart';
@@ -154,6 +155,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<CommonProvider>(create: (_) => CommonProvider(CommonService(apiService)),),
           ChangeNotifierProvider<ConversationProvider>(create: (_) => ConversationProvider(ConversationService(apiService)),),
           ChangeNotifierProvider<NotificationProvider>(create: (_) => NotificationProvider(NotificationService(apiService)),),
+          ChangeNotifierProvider<NotificationBadgeProvider>(create: (_) => NotificationBadgeProvider(NotificationService(apiService)),),
           ChangeNotifierProvider<ProfileUserProvider>(create: (_) => ProfileUserProvider(ProfileUserService(apiService)),),
           ChangeNotifierProvider<AppCommissionProvider>(create: (_) => AppCommissionProvider(apiService),),
           ChangeNotifierProvider<ShippingProvider>(create: (_) => ShippingProvider(ShippingService(apiService)),),
