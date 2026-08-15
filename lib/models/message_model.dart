@@ -24,12 +24,13 @@ class Message {
   factory Message.fromJson(Map<String, dynamic> json) {
     return Message(
       id: json['id'] ?? 0,
+      conversationId: json['conversation_id'] ?? 0,
       senderId: json['sender_id'] ?? 0,
       body: json['body'] ?? '',
       image: json['image'] ?? '',
       senderName: json['sender_name'] ?? '',
-      isShippingRequest: json['is_shipping_request'],
-      read: (json['read'] ?? 0) == 1,
+      isShippingRequest: json['is_shipping_request'] == true || json['is_shipping_request'] == 1 || json['is_shipping_request'] == '1',
+      read: json['read'] == true || json['read'] == 1 || json['read'] == '1',
       createdAt: json['date_sent'] ?? '',
     );
   }
