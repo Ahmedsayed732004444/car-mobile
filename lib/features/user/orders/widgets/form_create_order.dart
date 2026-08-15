@@ -409,7 +409,12 @@ class _buildFieldsByType extends StatelessWidget {
       builder: (context, dynamicFormProv, child) {
         final filteredFields = customFieldsList.where((field) {
           final isFileField = field.fieldType == CustomFieldTypeEnum.file.name;
-          return showFileFields ? isFileField : !isFileField;
+          final isHandledSeparately = field.fieldName == 'part_name' ||
+              field.fieldName == 'car_name' ||
+              field.fieldName == 'spare_parts_field' ||
+              field.labelAr.contains('قطعة') ||
+              field.labelAr.contains('سيارة');
+          return (showFileFields ? isFileField : !isFileField) && !isHandledSeparately;
         }).toList();
 
         if (filteredFields.isEmpty) return const SizedBox.shrink();
