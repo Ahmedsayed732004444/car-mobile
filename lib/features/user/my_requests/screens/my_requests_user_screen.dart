@@ -6,6 +6,7 @@ import '../../../../core/providers/users/my_request_user_provider.dart';
 import '../../../../core/utils/size_config.dart';
 import '../../../../widgets/custom_empty_widget.dart';
 import '../../../../widgets/custom_loading.dart';
+import '../../../../widgets/section_badge_widget.dart';
 import '../widgets/my_request_user_card.dart';
 
 class MyRequestUserScreen extends StatefulWidget {
@@ -67,8 +68,16 @@ class _MyRequestUserScreenState extends State<MyRequestUserScreen> {
             padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
             itemBuilder: (context, index) {
               if (index < provider.requestModelList.length) {
-                return Padding(padding: const EdgeInsets.only(bottom: 12),
-                  child: MyRequestUserCard(model: provider.requestModelList[index],),);
+                final item = provider.requestModelList[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: SectionBadgeWidget(
+                    categoryKey: 'company_responses',
+                    entityId: item.requestId,
+                    offset: const Offset(12, 12),
+                    child: MyRequestUserCard(model: item),
+                  ),
+                );
               } else {
                 return const Padding(padding: EdgeInsets.only(bottom: 10),
                   child: CustomLoading(radius: 18,),

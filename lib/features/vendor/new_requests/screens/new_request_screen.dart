@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/utils/size_config.dart';
 import '../../../../widgets/custom_loading.dart';
+import '../../../../widgets/section_badge_widget.dart';
 import '../../../../widgets/vendor/request_vendor_card.dart';
 
 class NewRequestScreen extends StatefulWidget {
@@ -75,8 +76,16 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
             padding: const EdgeInsets.only(top: 12, left: 12, right: 12),
             itemBuilder: (context, index) {
               if (index < provider.requestEligibleVendorModelList.length) {
-                return Padding(padding: const EdgeInsets.only(bottom: 12),
-                  child: RequestVendorCard(model: provider.requestEligibleVendorModelList[index],),);
+                final item = provider.requestEligibleVendorModelList[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: SectionBadgeWidget(
+                    categoryKey: 'customer_requests',
+                    entityId: item.requestId,
+                    offset: const Offset(12, 12),
+                    child: RequestVendorCard(model: item),
+                  ),
+                );
               } else {
                 return const Padding(padding: EdgeInsets.only(bottom: 10),
                   child: CustomLoading(radius: 18,),

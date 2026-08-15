@@ -37,6 +37,7 @@ class _ResponsesMyRequestScreenState extends State<ResponsesMyRequestScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      context.read<NotificationBadgeProvider>().markEntityRead(section: 'company_responses', entityId: widget.requestId);
       final provider = Provider.of<ResponsesMyRequestProvider>(context, listen: false);
       provider.resetPagination();
       await provider.getResponsesMyRequest(requestId: widget.requestId);

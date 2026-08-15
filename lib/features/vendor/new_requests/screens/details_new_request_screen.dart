@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/data_sources/local/secure_storage.dart';
 import '../../../../core/data_sources/remote/api_path.dart';
+import '../../../../core/providers/notification_badge_provider.dart';
 import '../../../../core/utils/date_parser_utils.dart';
 import '../../../../core/utils/size_config.dart';
 import '../../../../core/utils/utils.dart';
@@ -32,6 +33,7 @@ class _DetailsNewRequestScreenState extends State<DetailsNewRequestScreen> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      context.read<NotificationBadgeProvider>().markEntityRead(section: 'customer_requests', entityId: widget.requestId);
       final provider = Provider.of<NewRequestVendorProvider>(context, listen: false);
       await provider.detailsNewRequests(requestId: widget.requestId);
     });
