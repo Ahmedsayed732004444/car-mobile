@@ -265,7 +265,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                     IconButton(
                       icon: const Icon(Icons.camera_alt, color: AppColor.primaryColor),
-                      onPressed: () async {
+                      onPressed: provider.isLoadingSend ? null : () async {
                         ImagePickerBottomSheet.show(context, (picked) async {
                           if (picked != null) {
                             provider.changeSelectedConversationImage(picked);
@@ -277,7 +277,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     const SizedBox(width: 5),
                     IconButton(
                       icon: provider.isLoadingSend ? const CustomLoading(radius: 10) : const Icon(Icons.send, color: AppColor.primaryColor),
-                      onPressed: () async {
+                      onPressed: provider.isLoadingSend ? null : () async {
                         await onSendMessage(provider);
                       },
                     )
