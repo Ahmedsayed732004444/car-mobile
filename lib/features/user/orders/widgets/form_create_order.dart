@@ -262,28 +262,56 @@ class FormCreateOrderWidget extends StatelessWidget {
             child: ContainerFieldsWidget(
               title: 'تفاصيل قطع الغيار',
               children: [
-                CustomTextField(
-                  label: 'اسم القطعة',
-                  hint: 'اسم القطعة',
-                  controller: context.read<DynamicFormProvider>().getController('part_name'),
-                  validator: (value) => FormValidatorUtils.textValidator(
-                    value,
-                    isRequired: true,
-                    minLength: 2,
-                    maxLength: 255,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      'اسم القطعة',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: AppColor.primaryColor,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    CustomTextField(
+                      label: '',
+                      hint: 'اسم القطعة',
+                      controller: context.read<DynamicFormProvider>().getController('part_name'),
+                      validator: (value) => FormValidatorUtils.textValidator(
+                        value,
+                        isRequired: true,
+                        minLength: 2,
+                        maxLength: 255,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 16),
-                CustomTextField(
-                  label: 'اسم السيارة',
-                  hint: 'كامري 2010',
-                  controller: context.read<DynamicFormProvider>().getController('car_name'),
-                  validator: (value) => FormValidatorUtils.textValidator(
-                    value,
-                    isRequired: true,
-                    minLength: 2,
-                    maxLength: 255,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      'اسم السيارة',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                        color: AppColor.primaryColor,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    CustomTextField(
+                      label: '',
+                      hint: 'كامري 2010',
+                      controller: context.read<DynamicFormProvider>().getController('car_name'),
+                      validator: (value) => FormValidatorUtils.textValidator(
+                        value,
+                        isRequired: true,
+                        minLength: 2,
+                        maxLength: 255,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
