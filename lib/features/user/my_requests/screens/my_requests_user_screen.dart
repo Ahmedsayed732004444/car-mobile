@@ -74,7 +74,7 @@ class _MyRequestUserScreenState extends State<MyRequestUserScreen> {
                   child: SectionBadgeWidget(
                     categoryKey: 'company_responses',
                     entityId: item.requestId,
-                    offset: const Offset(12, 12),
+                    offset: const Offset(-4, -4),
                     child: MyRequestUserCard(model: item),
                   ),
                 );

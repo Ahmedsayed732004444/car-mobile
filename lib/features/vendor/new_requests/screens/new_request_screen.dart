@@ -82,7 +82,7 @@ class _NewRequestScreenState extends State<NewRequestScreen> {
                   child: SectionBadgeWidget(
                     categoryKey: 'customer_requests',
                     entityId: item.requestId,
-                    offset: const Offset(12, 12),
+                    offset: const Offset(-4, -4),
                     child: RequestVendorCard(model: item),
                   ),
                 );
