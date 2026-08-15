@@ -1,8 +1,11 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import '../data_sources/local/secure_storage.dart';
 import '../services/shared/notification_service.dart';
 
 class NotificationBadgeProvider extends ChangeNotifier {
   final NotificationService _service;
+  Timer? _pollingTimer;
 
   Map<String, int> unreadCounts = {
     'customer_requests': 0,
@@ -17,6 +20,24 @@ class NotificationBadgeProvider extends ChangeNotifier {
   };
 
   NotificationBadgeProvider(this._service);
+
+  void startRealTimePolling() {
+    _pollingTimer?.cancel();
+    fetchUnreadCounts();
+    _pollingTimer = Timer.periodic(const Duration(seconds: 4), (_) async {
+      final loggedIn = await SecureStorage.isLoggedIn();
+      if (loggedIn) {
+        await fetchUnreadCounts();
+      } else {
+        stopRealTimePolling();
+      }
+    });
+  }
+
+  void stopRealTimePolling() {
+    _pollingTimer?.cancel();
+    _pollingTimer = null;
+  }
 
   int getCount(String category, {int? entityId}) {
     if (entityId != null) {
@@ -40,7 +61,6 @@ class NotificationBadgeProvider extends ChangeNotifier {
   }
 
   Future<void> fetchUnreadCounts() async {
-    debugPrint('🔔 Fetching notification unread counts & entity breakdown from backend...');
     final rawData = await _service.getRawUnreadCountsData();
     if (rawData != null) {
       _parseRawData(rawData);
@@ -122,6 +142,7 @@ class NotificationBadgeProvider extends ChangeNotifier {
   }
 
   void clearAll() {
+    stopRealTimePolling();
     unreadCounts = {
       'customer_requests': 0,
       'company_responses': 0,
