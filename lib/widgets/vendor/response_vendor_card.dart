@@ -13,6 +13,9 @@ import '../../features/vendor/responses/screens/details_response_request_screen.
 import '../../models/response_request_model.dart';
 import '../request_status_widget.dart';
 
+import 'package:provider/provider.dart';
+import '../../core/providers/conversation_provider.dart';
+
 class ResponseVendorCard extends StatelessWidget {
   const ResponseVendorCard({super.key, required this.model});
   final ResponseRequestModel model;
@@ -32,7 +35,6 @@ class ResponseVendorCard extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                    flex: 1,
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: Text(
@@ -43,14 +45,60 @@ class ResponseVendorCard extends StatelessWidget {
                 const SizedBox(
                   width: 5,
                 ),
-                Expanded(
-                    flex: 1,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: RequestStatusWidget(
-                        status: model.requestStatus,
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        context.read<ConversationProvider>().createConversation(
+                          context,
+                          body: {
+                            'requestId': model.requestId,
+                            'responseId': model.responseId,
+                            'vendorId': model.vendorId,
+                          },
+                          requestId: model.requestId,
+                          responseId: model.responseId,
+                          vendorId: model.vendorId,
+                          receiverName: model.userName.isNotEmpty ? model.userName : 'العميل',
+                          receiverLogo: model.userLogo,
+                          isVendor: true,
+                        );
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: AppColor.primaryColor.withOpacity(0.08),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: AppColor.primaryColor.withOpacity(0.3)),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.chat_bubble_outline,
+                              size: 14,
+                              color: AppColor.primaryColor,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              'الدردشة',
+                              style: TextStyle(
+                                fontSize: SizeConfig.widthResponsive(0.032),
+                                color: AppColor.primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    )),
+                    ),
+                    const SizedBox(width: 6),
+                    RequestStatusWidget(
+                      status: model.requestStatus,
+                    ),
+                  ],
+                ),
               ],
             ),
             const Divider(

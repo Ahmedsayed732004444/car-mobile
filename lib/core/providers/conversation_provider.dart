@@ -63,6 +63,7 @@ class ConversationProvider extends ChangeNotifier {
         required int vendorId,
         required String receiverName,
         required String receiverLogo,
+        bool isVendor = false,
       }) async {
 
     if(!await ConnectionUtils.hasInternetConnection()){
@@ -83,6 +84,7 @@ class ConversationProvider extends ChangeNotifier {
              receiverName: receiverName,
              receiverLogo: receiverLogo,
              myUserId: context.read<AuthProvider>().currentUseModel?.id ?? 0,
+             isVendor: isVendor,
            ));
         }else{
           ToastHelper.showError(_response['message']);
