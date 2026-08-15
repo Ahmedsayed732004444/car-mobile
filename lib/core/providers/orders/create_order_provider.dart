@@ -35,8 +35,6 @@ class CreateOrderProvider extends ChangeNotifier {
 
   bool isCategoryHasBrand = false;
   String? descriptionRequest;
-  String? partNameRequest;
-  String? carNameRequest;
   String? messageCheckEligibleVendorsResult = '';
 
   // constructor provider
@@ -151,8 +149,6 @@ class CreateOrderProvider extends ChangeNotifier {
       'categoryId': (categorySelectedModel?.id ?? 0).toString(),
       'customerCityId': (myCitySelectedModel?.id ?? 0).toString(),
       'description': descriptionRequest ?? '',
-      'partName': partNameRequest ?? '',
-      'carName': carNameRequest ?? '',
       'citiesIdsScope': jsonEncode(selectedCitiesRequestList?.map((e) => e.id).toList()),
       'brandId': selectedBrandsList.isNotEmpty
           ? jsonEncode(selectedBrandsList.map((e) => e.id).toList())
