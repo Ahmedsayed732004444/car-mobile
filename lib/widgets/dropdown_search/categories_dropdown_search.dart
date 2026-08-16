@@ -73,6 +73,14 @@ class CategoriesDropdownSearch extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Text(
+                              'الخدمات',
+                              style: TextStyle(
+                                color: AppColor.primaryColor,
+                                fontSize: SizeConfig.widthResponsive(0.05),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             InkWell(
                               onTap: () {
                                 setState(() {
@@ -86,6 +94,14 @@ class CategoriesDropdownSearch extends StatelessWidget {
                               },
                               child: Row(
                                 children: [
+                                  const Text(
+                                    'تحديد الكل',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
                                   Checkbox(
                                     value: isAllSelected,
                                     activeColor: AppColor.primaryColor,
@@ -103,23 +119,7 @@ class CategoriesDropdownSearch extends StatelessWidget {
                                       });
                                     },
                                   ),
-                                  const Text(
-                                    'تحديد الكل',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black87,
-                                    ),
-                                  ),
                                 ],
-                              ),
-                            ),
-                            Text(
-                              'الخدمات',
-                              style: TextStyle(
-                                color: AppColor.primaryColor,
-                                fontSize: SizeConfig.widthResponsive(0.05),
-                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
