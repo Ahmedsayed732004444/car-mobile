@@ -28,7 +28,7 @@ class BuildVendorDetailsResponseWidget extends StatelessWidget {
             width: SizeConfig.widthResponsive(0.20),
             height: SizeConfig.widthResponsive(0.20),
             radius: 60,
-            assetDefaultPath: AssetsPath.user_image,
+            assetDefaultPath: AssetsPath.logo,
           ),
           const SizedBox(
             width: 16,
