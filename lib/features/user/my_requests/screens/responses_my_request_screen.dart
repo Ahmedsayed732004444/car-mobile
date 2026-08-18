@@ -156,7 +156,7 @@ class _ResponseMyRequestCard extends StatelessWidget {
                   urlImage: model.vendorLogo,
                   width: SizeConfig.widthResponsive(0.20),
                   height: SizeConfig.widthResponsive(0.20),
-                  assetDefaultPath: AssetsPath.user_image,
+                  assetDefaultPath: AssetsPath.logo,
                 ),
                 const SizedBox(width: 10,),
                 Expanded(child: Column(
