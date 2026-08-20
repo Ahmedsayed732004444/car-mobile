@@ -10,6 +10,7 @@ import '../../../../core/providers/conversation_provider.dart';
 import '../../../../core/utils/constants/colors_constants.dart';
 import '../../../../core/utils/launcher_url_utils.dart';
 import '../../../../models/response_request_model.dart';
+import '../../vendor_profile/screens/vendor_profile_screen.dart';
 import '../../../../widgets/container_fields_widget.dart';
 import '../../../../widgets/images/custom_image.dart';
 
@@ -23,12 +24,24 @@ class BuildVendorDetailsResponseWidget extends StatelessWidget {
     return ContainerFieldsWidget(title: 'بيانات الشركة', children: [
       Row(
         children: [
-          CustomImageWidget(
-            urlImage: model?.vendorLogo,
-            width: SizeConfig.widthResponsive(0.20),
-            height: SizeConfig.widthResponsive(0.20),
-            radius: 60,
-            assetDefaultPath: AssetsPath.logo,
+          GestureDetector(
+            onTap: () {
+              if (model?.vendorId != null && model!.vendorId > 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VendorProfileScreen(vendorId: model!.vendorId),
+                  ),
+                );
+              }
+            },
+            child: CustomImageWidget(
+              urlImage: model?.vendorLogo,
+              width: SizeConfig.widthResponsive(0.20),
+              height: SizeConfig.widthResponsive(0.20),
+              radius: 60,
+              assetDefaultPath: AssetsPath.logo,
+            ),
           ),
           const SizedBox(
             width: 16,
@@ -39,9 +52,21 @@ class BuildVendorDetailsResponseWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(
-                    '${model?.companyNameAr ?? ''}',
-                    style: txtBold04,
+                  GestureDetector(
+                    onTap: () {
+                      if (model?.vendorId != null && model!.vendorId > 0) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VendorProfileScreen(vendorId: model!.vendorId),
+                          ),
+                        );
+                      }
+                    },
+                    child: Text(
+                      '${model?.companyNameAr ?? ''}',
+                      style: txtBold04,
+                    ),
                   ),
                   const SizedBox(
                     height: 10,

@@ -13,6 +13,8 @@ import '../../../../core/utils/connection_utils.dart';
 import '../../../../core/utils/constants/colors_constants.dart';
 import '../../../../core/utils/dialogUtils.dart';
 import '../../../../core/utils/size_config.dart';
+import '../../../../core/utils/constants/assets_path.dart';
+import '../../vendor_profile/screens/vendor_profile_screen.dart';
 import '../../../../widgets/components.dart';
 import '../../../../widgets/custom_empty_widget.dart';
 import '../../../../widgets/custom_loading.dart';
@@ -108,11 +110,24 @@ class _UserConversationScreenState extends State<UserConversationScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        leading: CustomImageWidget(
-                          urlImage: item.receiverLogo,
-                          width: SizeConfig.widthResponsive(0.15),
-                          height: SizeConfig.widthResponsive(0.15),
-                          radius: 60,
+                        leading: InkWell(
+                          onTap: () {
+                            if (item.vendorId != null && item.vendorId! > 0) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => VendorProfileScreen(vendorId: item.vendorId!),
+                                ),
+                              );
+                            }
+                          },
+                          child: CustomImageWidget(
+                            urlImage: item.receiverLogo,
+                            width: SizeConfig.widthResponsive(0.15),
+                            height: SizeConfig.widthResponsive(0.15),
+                            radius: 60,
+                            assetDefaultPath: AssetsPath.logo,
+                          ),
                         ),
                         title: Text('${item.receiverName}', style: txtSemiBold035,),
                         subtitle: Text('رقم الطلب : ${Utils.numberFormatting(item.requestId)}'),
