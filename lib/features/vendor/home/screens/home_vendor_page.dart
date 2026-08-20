@@ -1,6 +1,7 @@
 import 'package:car_mediator_mobile/core/styles/styles.dart';
 import 'package:car_mediator_mobile/core/utils/constants/colors_constants.dart';
 import 'package:car_mediator_mobile/features/vendor/new_requests/screens/new_request_screen.dart';
+import 'package:car_mediator_mobile/features/user/vendor_profile/screens/vendor_profile_screen.dart';
 import 'package:car_mediator_mobile/widgets/components.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -164,15 +165,38 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
               ],
             ),),
           const SizedBox(height: 10,),
-          Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthResponsive(0.15)),
-          child: DashboardItemHome(
-            title: 'تسجيل الخروج',
-            subTitle: 'تسجيل الخروج من الحساب',
-            icon: const Icon(Icons.logout, color: AppColor.primaryColor, size: 32),
-            onTap: (){
-              DialogUtils().showConfirmDialog(context, message: 'هل تريد تسجيل الخروج', confirm: () async => await context.read<AuthProvider>().logout(context));
-            },
-          ),),
+          Padding(padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: DashboardItemHome(
+                    title: 'تقييمات العملاء',
+                    subTitle: 'تقييماتي وملفي',
+                    icon: const Icon(Icons.star_rate, color: AppColor.primaryColor, size: 32),
+                    onTap: (){
+                      final userId = context.read<AuthProvider>().currentUseModel?.id ?? 0;
+                      navigationPush(context, VendorProfileScreen(vendorId: userId, isVendorView: true));
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  flex: 1,
+                  child: DashboardItemHome(
+                    title: 'تسجيل الخروج',
+                    subTitle: 'تسجيل الخروج من الحساب',
+                    icon: const Icon(Icons.logout, color: AppColor.primaryColor, size: 32),
+                    onTap: (){
+                      DialogUtils().showConfirmDialog(context, message: 'هل تريد تسجيل الخروج', confirm: () async => await context.read<AuthProvider>().logout(context));
+                    },
+                  ),
+                ),
+              ],
+            ),),
           const SizedBox(height: 10,),
 
         ],

@@ -200,7 +200,7 @@ class SendRangeCard extends StatelessWidget {
           height: 10,
         ),
         Text(
-          'تحديد نطاق الإرسال',
+          'تحديد مناطق المتاجر',
           style: txtBold04,
         ),
         const SizedBox(

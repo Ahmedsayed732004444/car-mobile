@@ -86,7 +86,7 @@ class _SendOrderScreenState extends State<SendOrderScreen> {
                     return;
                   }
                   if(_prov.selectedCitiesRequestList == null || _prov.selectedCitiesRequestList!.isEmpty){
-                    ToastHelper.showInfo('يجب اختيار مدينة واحدة على الأقل لتحديد نطاق الإرسال.');
+                    ToastHelper.showInfo('يجب اختيار مدينة واحدة على الأقل لتحديد مناطق المتاجر.');
                     return;
                   }
                   customBottomSheet(context,

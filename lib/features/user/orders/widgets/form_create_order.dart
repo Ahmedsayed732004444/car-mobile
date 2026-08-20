@@ -22,6 +22,7 @@ import '../../../../widgets/custom_container_listtile_widget.dart';
 import '../../../../widgets/custom_fields/build_dynamic_fields_widget.dart';
 import '../../../../widgets/custom_textfield.dart';
 import '../../../../widgets/dropdown_search/brand_dropdown_builder_multiselection_widget.dart';
+import 'how_to_copy_chassis_bottom_sheet.dart';
 
 class FormCreateOrderWidget extends StatelessWidget {
   const FormCreateOrderWidget({
@@ -399,6 +400,58 @@ class FormCreateOrderWidget extends StatelessWidget {
             )
           ],
         ),
+        if (_createOrderProvider.categorySelectedModel?.catNameAr.contains('قطع') ?? false) ...[
+          const SizedBox(
+            height: 16,
+          ),
+          ContainerFieldsWidget(
+            title: 'رقم الهيكل',
+            trailingTitleWidget: InkWell(
+              onTap: () {
+                showHowToCopyChassisBottomSheet(context);
+              },
+              child: const Row(
+                children: [
+                  Icon(Icons.play_circle_outline, size: 16, color: AppColor.primaryColor),
+                  SizedBox(width: 4),
+                  Text('كيف انسخ رقم الهيكل؟', style: TextStyle(fontSize: 13, color: AppColor.primaryColor, fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
+            children: [
+              CustomTextField(
+                label: '',
+                hint: 'مثال ( KNAFJ4.... )',
+                controller: context.read<DynamicFormProvider>().getController('chassis_number'),
+                validator: (value) => FormValidatorUtils.textValidator(
+                  value,
+                  isRequired: true,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          ContainerFieldsWidget(
+            title: 'تأكيد رقم الهيكل',
+            children: [
+              CustomTextField(
+                label: '',
+                hint: 'مثال ( KNAFJ4.... )',
+                controller: context.read<DynamicFormProvider>().getController('confirm_chassis_number'),
+                validator: (value) {
+                  final validation = FormValidatorUtils.textValidator(value, isRequired: true);
+                  if (validation != null) return validation;
+                  if (value != context.read<DynamicFormProvider>().getController('chassis_number').text) {
+                    return 'رقم الهيكل غير متطابق';
+                  }
+                  return null;
+                },
+              ),
+            ],
+          ),
+        ],
         _buildFieldsByType(
           customFieldsList: customFieldsList,
           isArabic: _isArabic,
@@ -431,6 +484,8 @@ class _buildFieldsByType extends StatelessWidget {
               field.fieldName == 'car_name' ||
               field.fieldName == 'budget' ||
               field.fieldName == 'spare_parts_field' ||
+              field.fieldName == 'chassis_number' ||
+              field.fieldName == 'confirm_chassis_number' ||
               field.labelAr.contains('قطعة') ||
               field.labelAr.contains('ميزان') ||
               field.labelAr.contains('سيارة');

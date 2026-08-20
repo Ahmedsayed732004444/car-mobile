@@ -29,7 +29,10 @@ import '../../../../widgets/custom_container_listtile_widget.dart';
 import '../../../../widgets/custom_textfield.dart';
 import '../../../../widgets/images/custom_image.dart';
 import '../../../user/shipping_request/screens/confirm_shipping_request_screen.dart';
-
+import '../../../user/vendor_profile/screens/vendor_profile_screen.dart';
+import '../../../user/vendor_profile/widgets/rate_vendor_bottom_sheet.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '../../../../core/providers/vendor_profile_provider.dart';
 class ChatScreen extends StatefulWidget {
   final int conversationId;
   final int requestId;
@@ -63,6 +66,9 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!widget.isVendor) {
+        context.read<VendorProfileProvider>().fetchVendorProfile(context, widget.vendorId, refresh: true);
+      }
       context.read<NotificationBadgeProvider>().markEntityRead(section: 'conversations', entityId: widget.conversationId);
       final prov = Provider.of<ConversationProvider>(context, listen: false);
       prov.initProvider();
@@ -88,20 +94,48 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.white,
-          title: Row(
-            children: [
-              const SizedBox(width: 5),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('رقم الطلب : ${widget.requestId}', style: txtLightSemiBold035,),
-                  Text(
-                    '${widget.receiverName}',
-                    style: txtSemiBold033,
-                  ),
-                ],
-              ),
-            ],
+          title: Consumer<VendorProfileProvider>(
+            builder: (context, provider, child) {
+              return InkWell(
+                onTap: () {
+                  if (widget.vendorId > 0 && !widget.isVendor) {
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => VendorProfileScreen(vendorId: widget.vendorId)));
+                  }
+                },
+                child: Row(
+                  children: [
+                    const SizedBox(width: 5),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('رقم الطلب : ${widget.requestId}', style: txtLightSemiBold035,),
+                        Text(
+                          '${widget.receiverName}',
+                          style: txtSemiBold033,
+                        ),
+                        if (!widget.isVendor && provider.vendor != null)
+                          Row(
+                            children: [
+                              Text(
+                                provider.vendor!.rating.toStringAsFixed(1),
+                                style: TextStyle(fontSize: 12, color: Colors.amber[700], fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(width: 2),
+                              RatingBarIndicator(
+                                rating: provider.vendor!.rating,
+                                itemBuilder: (context, index) => const Icon(Icons.star, color: Colors.amber),
+                                itemCount: 5,
+                                itemSize: 12.0,
+                                direction: Axis.horizontal,
+                              ),
+                            ],
+                          ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }
           ),
           elevation: 0,
           actions:  [
@@ -141,11 +175,36 @@ class _ChatScreenState extends State<ChatScreen> {
                 Text('طلب شحن', style: txtSemiBold033,)
               ],
             )),
+            if(!widget.isVendor && widget.vendorId > 0)
+              TextButton(
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                    ),
+                    builder: (context) => RateVendorBottomSheet(
+                      vendorId: widget.vendorId,
+                      requestId: widget.requestId,
+                    ),
+                  );
+                },
+                child: Text('تقييم التاجر', style: txtBold04.copyWith(color: AppColor.primaryColor)),
+              ),
           ],
           leadingWidth: SizeConfig.widthResponsive(0.18),
           titleSpacing: 0,
-          leading:  Padding(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: CustomImageWidget(urlImage: widget.receiverLogo),
+          leading:  InkWell(
+            onTap: () {
+              if (widget.vendorId > 0 && !widget.isVendor) {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => VendorProfileScreen(vendorId: widget.vendorId)));
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: CustomImageWidget(urlImage: widget.receiverLogo),
+            ),
           )),
       body: Consumer<ConversationProvider>(
         builder: (context, provider, child) {

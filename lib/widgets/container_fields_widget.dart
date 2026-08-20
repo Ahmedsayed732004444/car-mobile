@@ -7,10 +7,11 @@ import '../core/utils/constants/constants.dart';
 import '../core/utils/size_config.dart';
 
 class ContainerFieldsWidget extends StatelessWidget {
-  const ContainerFieldsWidget({super.key, this.padding =10 , required this.title, required this.children});
+  const ContainerFieldsWidget({super.key, this.padding =10 , required this.title, required this.children, this.trailingTitleWidget});
   final double padding;
   final String title;
   final List<Widget> children;
+  final Widget? trailingTitleWidget;
 
 
   @override
@@ -40,7 +41,13 @@ class ContainerFieldsWidget extends StatelessWidget {
                 border:const Border(bottom: BorderSide(color:AppColor.secondaryColor )),
                 borderRadius:const BorderRadius.only(topLeft: Radius.circular(8),topRight: Radius.circular(8))
             ),
-            child: Text('${title}',textAlign: TextAlign.start,style: txtSemiBold035,),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(title, textAlign: TextAlign.start, style: txtSemiBold035,),
+                if (trailingTitleWidget != null) trailingTitleWidget!,
+              ],
+            ),
           ),
           const SizedBox(height: 8,),
           Padding(

@@ -40,6 +40,7 @@ import 'core/providers/vendors/specialty_vendor_provider.dart';
 import 'core/services/shared/cache_service.dart';
 import 'core/services/shared/conversation_service.dart';
 import 'core/services/shared/notification_service.dart';
+import 'core/providers/vendor_profile_provider.dart';
 import 'core/services/shared/shipping_service.dart';
 import 'core/services/user/my_requests/my_request_user_service.dart';
 import 'core/services/user/profile_user_service.dart';
@@ -159,6 +160,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider<ProfileUserProvider>(create: (_) => ProfileUserProvider(ProfileUserService(apiService)),),
           ChangeNotifierProvider<AppCommissionProvider>(create: (_) => AppCommissionProvider(apiService),),
           ChangeNotifierProvider<ShippingProvider>(create: (_) => ShippingProvider(ShippingService(apiService)),),
+          ChangeNotifierProvider<VendorProfileProvider>(create: (_) => VendorProfileProvider(),),
         ] ,
           child:GestureDetector(
             onTap: (){
