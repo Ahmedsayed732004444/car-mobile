@@ -41,7 +41,7 @@ class BuildManageProfileWidget extends StatelessWidget {
                 width: SizeConfig.widthResponsive(0.25),
                 height: SizeConfig.widthResponsive(0.25),
                 radius: 60,
-                assetDefaultPath: AssetsPath.user_image,
+                assetDefaultPath: AssetsPath.logo,
               ),
               Padding(padding: EdgeInsets.symmetric(horizontal: SizeConfig.widthResponsive(0.20),),
                 child: TextButton(
