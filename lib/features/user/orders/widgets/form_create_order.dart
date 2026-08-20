@@ -434,7 +434,7 @@ class FormCreateOrderWidget extends StatelessWidget {
             height: 16,
           ),
           ContainerFieldsWidget(
-            title: 'تأكيد رقم الهيكل',
+            title: 'إعادة رقم الهيكل',
             children: [
               CustomTextField(
                 label: '',
