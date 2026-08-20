@@ -156,6 +156,7 @@ class FcmService {
       if (cxt != null) {
         try {
           cxt.read<NotificationBadgeProvider>().fetchUnreadCounts();
+          cxt.read<ConversationProvider>().onRealtimeMessageReceived(message.data);
         } catch (e) {
           log('Error updating NotificationBadgeProvider on FCM: $e');
         }

@@ -24,6 +24,21 @@ class ConversationProvider extends ChangeNotifier {
   List<ConversationModel> conversationModelList = [];
 
   int lastMessageId = 0;
+  int? activeConversationId;
+
+  void setActiveConversation(int? convId) {
+    activeConversationId = convId;
+  }
+
+  void onRealtimeMessageReceived(Map<String, dynamic> data) {
+    final rawId = data['conversation_id'];
+    if (rawId == null) return;
+    final convId = int.tryParse(rawId.toString());
+
+    if (convId != null && activeConversationId == convId) {
+      fetchNewMessages(conversationId: convId);
+    }
+  }
 
   ConversationProvider(this._conversationService);
 

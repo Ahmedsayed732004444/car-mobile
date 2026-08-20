@@ -72,21 +72,17 @@ class _ChatScreenState extends State<ChatScreen> {
       context.read<NotificationBadgeProvider>().markEntityRead(section: 'conversations', entityId: widget.conversationId);
       final prov = Provider.of<ConversationProvider>(context, listen: false);
       prov.initProvider();
+      prov.setActiveConversation(widget.conversationId);
       await prov.loadInitialMessages(conversationId: widget.conversationId);
-      startPolling(prov);
     });
   }
 
   @override
   void dispose() {
-    timer?.cancel();
+    try {
+      context.read<ConversationProvider>().setActiveConversation(null);
+    } catch (_) {}
     super.dispose();
-  }
-
-  void startPolling(ConversationProvider provider) {
-    timer = Timer.periodic(const Duration(seconds: 3), (timer) async {
-      await provider.fetchNewMessages(conversationId: widget.conversationId);
-    });
   }
 
   @override
