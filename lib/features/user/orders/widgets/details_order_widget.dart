@@ -42,8 +42,7 @@ class DetailsOrderWidget extends StatelessWidget {
         if (_createOrderProvider.isCategoryHasBrand)
           ItemTableWidget(
             keyString: 'الموديل',
-            value: (_createOrderProvider.categorySelectedModel?.catNameAr.contains('جديد') ?? false) &&
-                    _createOrderProvider.selectedBrandsList.length == _cacheProvider.brandsCarsList.length &&
+            value: _createOrderProvider.selectedBrandsList.length == _cacheProvider.brandsCarsList.length &&
                     _cacheProvider.brandsCarsList.isNotEmpty
                 ? 'جميع الشركات'
                 : (_createOrderProvider.selectedBrandsList.isNotEmpty

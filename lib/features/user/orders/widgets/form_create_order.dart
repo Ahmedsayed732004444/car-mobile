@@ -217,6 +217,18 @@ class FormCreateOrderWidget extends StatelessWidget {
     final _createOrderProvider = Provider.of<CreateOrderProvider>(context);
     final _cacheProvider = context.read<CacheProvider>();
 
+    final catName = _createOrderProvider.categorySelectedModel?.catNameAr ?? '';
+
+    // التبديل بين سيارة جديدة وقطع غيار جديدة
+    final bool isSpareParts = catName.contains('قطع');
+    final bool isNewCar = (catName.contains('سيارة') || (catName.contains('جديد') && !catName.contains('قطع')));
+
+    // 1. الميزانية والبحث في جميع الشركات أصبحت في قسم قطع غيار جديدة
+    final bool showMultiSelectBrandsAndBudget = isSpareParts;
+
+    // 2. تفاصيل القطع ورقم الهيكل أصبحت في قسم سيارة جديدة
+    final bool showPartDetailsAndChassis = isNewCar;
+
     return ListView(
       shrinkWrap: true,
       physics: const ScrollPhysics(),
@@ -225,7 +237,7 @@ class FormCreateOrderWidget extends StatelessWidget {
           ContainerFieldsWidget(
             title: 'الموديل',
             children: [
-              if (_createOrderProvider.categorySelectedModel?.catNameAr.contains('جديد') ?? false)
+              if (showMultiSelectBrandsAndBudget)
                 InkWell(
                   onTap: () => _showBrandsBottomSheet(context, _cacheProvider, _createOrderProvider),
                   child: InputDecorator(
@@ -257,7 +269,7 @@ class FormCreateOrderWidget extends StatelessWidget {
                 ),
             ],
           ),
-        if (_createOrderProvider.categorySelectedModel?.catNameAr.contains('جديد') ?? false)
+        if (showMultiSelectBrandsAndBudget)
           Padding(
             padding: const EdgeInsets.only(top: 16),
             child: ContainerFieldsWidget(
@@ -275,7 +287,7 @@ class FormCreateOrderWidget extends StatelessWidget {
               ],
             ),
           ),
-        if (_createOrderProvider.categorySelectedModel?.catNameAr.contains('قطع') ?? false)
+        if (showPartDetailsAndChassis)
           Padding(
             padding: const EdgeInsets.only(top: 16),
             child: ContainerFieldsWidget(
@@ -400,7 +412,7 @@ class FormCreateOrderWidget extends StatelessWidget {
             )
           ],
         ),
-        if (_createOrderProvider.categorySelectedModel?.catNameAr.contains('قطع') ?? false) ...[
+        if (showPartDetailsAndChassis) ...[
           const SizedBox(
             height: 16,
           ),
