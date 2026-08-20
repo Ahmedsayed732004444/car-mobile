@@ -219,15 +219,14 @@ class FormCreateOrderWidget extends StatelessWidget {
 
     final catName = _createOrderProvider.categorySelectedModel?.catNameAr ?? '';
 
-    // التبديل بين سيارة جديدة وقطع غيار جديدة
     final bool isSpareParts = catName.contains('قطع');
     final bool isNewCar = (catName.contains('سيارة') || (catName.contains('جديد') && !catName.contains('قطع')));
 
-    // 1. الميزانية والبحث في جميع الشركات أصبحت في قسم قطع غيار جديدة
-    final bool showMultiSelectBrandsAndBudget = isSpareParts;
+    // 1. الميزانية والبحث في جميع الشركات الموديلات المخصصة لـ سيارة جديدة
+    final bool showMultiSelectBrandsAndBudget = isNewCar;
 
-    // 2. تفاصيل القطع ورقم الهيكل أصبحت في قسم سيارة جديدة
-    final bool showPartDetailsAndChassis = isNewCar;
+    // 2. تفاصيل القطع ورقم الهيكل المخصصة لـ قطع غيار جديدة
+    final bool showPartDetailsAndChassis = isSpareParts;
 
     return ListView(
       shrinkWrap: true,
