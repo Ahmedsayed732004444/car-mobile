@@ -219,14 +219,15 @@ class FormCreateOrderWidget extends StatelessWidget {
 
     final catName = _createOrderProvider.categorySelectedModel?.catNameAr ?? '';
 
+    final bool isUsedCar = catName.contains('مستعمل');
     final bool isSpareParts = catName.contains('قطع');
-    final bool isNewCar = (catName.contains('سيارة') || (catName.contains('جديد') && !catName.contains('قطع')));
+    final bool isNewCar = (catName.contains('جديد') && !catName.contains('قطع')) || (catName.contains('سيار') && !catName.contains('مستعمل') && !catName.contains('قطع'));
 
-    // 1. الميزانية والبحث في جميع الشركات الموديلات المخصصة لـ سيارة جديدة
+    // 1. الميزانية والبحث في جميع الشركات للموديلات مخصصة لـ سيارات جديدة
     final bool showMultiSelectBrandsAndBudget = isNewCar;
 
-    // 2. تفاصيل القطع ورقم الهيكل المخصصة لـ قطع غيار جديدة
-    final bool showPartDetailsAndChassis = isSpareParts;
+    // 2. تفاصيل القطع ورقم الهيكل مخصصة لـ سيارات مستعملة و قطع الغيار
+    final bool showPartDetailsAndChassis = isUsedCar || isSpareParts;
 
     return ListView(
       shrinkWrap: true,
