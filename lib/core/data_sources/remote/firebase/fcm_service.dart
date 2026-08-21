@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../features/shared/notifications/screens/notifications_screen.dart';
 import '../../../../widgets/components.dart';
+import '../../../providers/conversation_provider.dart';
 import '../../../providers/notification_badge_provider.dart';
 import '../../local/secure_storage.dart';
 
