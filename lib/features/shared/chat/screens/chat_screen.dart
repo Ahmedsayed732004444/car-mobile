@@ -368,7 +368,8 @@ class _ChatScreenState extends State<ChatScreen> {
       'responseId' : widget.responseId.toString(),
     },);
     controller.clear();
-    // await loadMessages();
+    // جلب الرسائل فوراً بعد الإرسال (تحديث الشاشة)
+    await provider.fetchNewMessages(conversationId: widget.conversationId);
   }
 }
 
