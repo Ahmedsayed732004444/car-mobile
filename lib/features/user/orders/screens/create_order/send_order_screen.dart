@@ -190,7 +190,7 @@ class _BuildRequestOrderBottomSheetState
                       showDialog(
                         context: context,
                         barrierDismissible: false,
-                        builder: (context) => ConfirmPledgeDialog(
+                        builder: (dialogContext) => ConfirmPledgeDialog(
                           onConfirm: () {
                             _prov.confirmOrderRequest(context);
                           },
