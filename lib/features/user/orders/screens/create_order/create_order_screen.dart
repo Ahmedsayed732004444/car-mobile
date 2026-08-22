@@ -11,6 +11,8 @@ import '../../widgets/app_bar_create_order_widget.dart';
 import '../../widgets/build_bottom_app_bar_create_order.dart';
 import '../../widgets/form_create_order.dart';
 
+import '../../widgets/confirm_pledge_dialog.dart';
+
 class CreateOrderScreen extends StatefulWidget {
   const CreateOrderScreen({super.key, required this.customFieldsList});
   final List<CustomFieldModel> customFieldsList;
@@ -52,10 +54,22 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
               ],
             )),
         bottomNavigationBar: BuildBottomAppBarCreateOrder(onTap: () {
-
           if (_formKey.currentState!.validate()) {
             _createOrderProvider.descriptionRequest = descriptionController.text.toString();
-            navigationPush(context, SendOrderScreen());
+            
+            if (_createOrderProvider.categorySelectedModel?.id == 1) {
+              navigationPush(context, SendOrderScreen());
+            } else {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => ConfirmPledgeDialog(
+                  onConfirm: () {
+                    navigationPush(context, SendOrderScreen());
+                  },
+                ),
+              );
+            }
           }
         }));
   }
