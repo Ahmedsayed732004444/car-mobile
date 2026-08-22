@@ -64,7 +64,8 @@ class _ConfirmPledgeDialogState extends State<ConfirmPledgeDialog> {
             // Confirm button
             CustomButton(
               label: 'تأكيد الطلب',
-              bgColor: (isChecked1 && isChecked2) ? AppColor.primaryColor : Colors.grey[400],
+              txtSize: SizeConfig.widthResponsive(0.04),
+              primaryColor: (isChecked1 && isChecked2) ? AppColor.primaryColor : Colors.grey[400]!,
               onTap: () {
                 if (isChecked1 && isChecked2) {
                   Navigator.pop(context);
