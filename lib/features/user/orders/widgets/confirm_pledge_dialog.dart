@@ -30,6 +30,14 @@ class _ConfirmPledgeDialogState extends State<ConfirmPledgeDialog> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: InkWell(
+                onTap: () => Navigator.pop(context),
+                child: const Icon(Icons.close, color: Colors.grey),
+              ),
+            ),
+            const SizedBox(height: 8),
             // Verses Title
             Text(
               'قال تعالى : (إِنَّ اللَّهَ يَأْمُرُكُمْ أَن تُؤَدُّوا الْأَمَانَاتِ إِلَىٰ أَهْلِهَا)\nوقال تعالى : (وَأَوْفُوا بِالْعَهْدِ ۖ إِنَّ الْعَهْدَ كَانَ مَسْئُولًا)',

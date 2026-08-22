@@ -25,6 +25,7 @@ import '../../../../../widgets/custom_loading.dart';
 import '../../../../../widgets/section_label_widget.dart';
 import '../../widgets/app_bar_create_order_widget.dart';
 import '../../widgets/build_bottom_app_bar_send_order.dart';
+import '../../widgets/confirm_pledge_dialog.dart';
 import '../../widgets/details_order_widget.dart';
 import '../../widgets/send_range_card.dart';
 
@@ -176,14 +177,26 @@ class _BuildRequestOrderBottomSheetState
                   height: SizeConfig.heightResponsive(0.04),
                 ),
                 CustomButton(
-                  label: 'تأكيد الطلب',
+                  label: 'إرسال الطلب',
                   txtSize: SizeConfig.widthResponsive(0.04),
                   onTap: () async {
                     if (!await ConnectionUtils.hasInternetConnection()) {
-                    DialogUtils().showNoInternetDialog(context);
-                    return;
+                      DialogUtils().showNoInternetDialog(context);
+                      return;
                     }
-                    _prov.confirmOrderRequest(context);
+                    if (_prov.categorySelectedModel?.id == 1) {
+                      _prov.confirmOrderRequest(context);
+                    } else {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (context) => ConfirmPledgeDialog(
+                          onConfirm: () {
+                            _prov.confirmOrderRequest(context);
+                          },
+                        ),
+                      );
+                    }
                   },
                 ),
                 SizedBox(

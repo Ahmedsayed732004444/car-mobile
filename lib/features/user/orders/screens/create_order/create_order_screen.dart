@@ -60,15 +60,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             if (_createOrderProvider.categorySelectedModel?.id == 1) {
               navigationPush(context, SendOrderScreen());
             } else {
-              showDialog(
-                context: context,
-                barrierDismissible: false,
-                builder: (context) => ConfirmPledgeDialog(
-                  onConfirm: () {
-                    navigationPush(context, SendOrderScreen());
-                  },
-                ),
-              );
+              navigationPush(context, SendOrderScreen());
             }
           }
         }));
