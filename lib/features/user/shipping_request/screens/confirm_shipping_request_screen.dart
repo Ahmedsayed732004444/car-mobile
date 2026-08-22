@@ -23,6 +23,7 @@ import '../../../../models/city_model.dart';
 import '../../../../widgets/components.dart';
 import '../../../../widgets/custom_container_listtile_widget.dart';
 import '../../../../widgets/custom_textfield.dart';
+import '../../orders/widgets/confirm_pledge_dialog.dart';
 
 class ConfirmShippingRequestScreen extends StatefulWidget {
   const ConfirmShippingRequestScreen({super.key, required this.requestId, required this.responseId, required this.vendorId});
@@ -160,24 +161,30 @@ class _ConfirmShippingRequestScreenState extends State<ConfirmShippingRequestScr
               loading: _provider.isLoading,
               onTap: ()  {
                 Helper.dismissKeyBoard();
-                DialogUtils().showConfirmDialog(context, message: 'تأكيد العملية', confirm: () async {
-                  Helper.dismissKeyBoard();
-                  if(!await ConnectionUtils.hasInternetConnection()){
-                  DialogUtils().showNoInternetDialog(context);
-                  return;
-                  }
-                  if (_formKey.currentState!.validate()){
-                  await _provider.ConfirmShippingRequest(context,body: {
-                  'requestId' : widget.requestId,
-                  'responseId': widget.responseId,
-                  'vendorId' : widget.vendorId,
-                  'idNumberUser' : idNumberController.text.trim().toString(),
-                    'cityOriginDimensions': _shippingProvider.myCitySelectedModel?.cityNameEn ?? '',
-                  'addressOriginDimensions' : addressController.text.trim().toString(),
-                  'phoneOriginDimensions' : _phoneController.text.trim().toString(),
-                  });
-                  }
-                });
+                if (_formKey.currentState!.validate()){
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (dialogContext) => ConfirmPledgeDialog(
+                      onConfirm: () async {
+                        Helper.dismissKeyBoard();
+                        if(!await ConnectionUtils.hasInternetConnection()){
+                          DialogUtils().showNoInternetDialog(context);
+                          return;
+                        }
+                        await _provider.ConfirmShippingRequest(context,body: {
+                          'requestId' : widget.requestId,
+                          'responseId': widget.responseId,
+                          'vendorId' : widget.vendorId,
+                          'idNumberUser' : idNumberController.text.trim().toString(),
+                          'cityOriginDimensions': _shippingProvider.myCitySelectedModel?.cityNameEn ?? '',
+                          'addressOriginDimensions' : addressController.text.trim().toString(),
+                          'phoneOriginDimensions' : _phoneController.text.trim().toString(),
+                        });
+                      },
+                    ),
+                  );
+                }
               },
             ),
           ),
