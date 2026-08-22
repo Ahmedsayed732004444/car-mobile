@@ -5,6 +5,7 @@ import 'package:car_mediator_mobile/core/helpers/toast_helper.dart';
 import 'package:car_mediator_mobile/widgets/components.dart';
 import 'package:car_mediator_mobile/widgets/custom_button.dart';
 import 'package:car_mediator_mobile/widgets/custom_loading.dart';
+import 'package:car_mediator_mobile/widgets/vendor/vendor_confirm_pledge_dialog.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -559,15 +560,23 @@ class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomShe
                 label: 'إرسال',
                 onTap: (){
                   if(_formKey.currentState?.validate() ?? false){
-                    widget.onSend(jsonEncode({
-                      'city': _shippingProvider.myCitySelectedModel?.cityNameEn ?? '',
-                      'address' : _addressController.text.toString(),
-                      'phone' : _phoneController.text.toString(),
-                      'length' : _lengthController.text.toString(),
-                      'width' : _widthController.text.toString(),
-                      'height' : _heightController.text.toString(),
-                      'weight' : _weightController.text.toString(),
-                    }));
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (dialogContext) => VendorConfirmPledgeDialog(
+                        onConfirm: () {
+                          widget.onSend(jsonEncode({
+                            'city': _shippingProvider.myCitySelectedModel?.cityNameEn ?? '',
+                            'address' : _addressController.text.toString(),
+                            'phone' : _phoneController.text.toString(),
+                            'length' : _lengthController.text.toString(),
+                            'width' : _widthController.text.toString(),
+                            'height' : _heightController.text.toString(),
+                            'weight' : _weightController.text.toString(),
+                          }));
+                        },
+                      ),
+                    );
                   }
                 },
                 txtSize: SizeConfig.widthResponsive(0.04),
