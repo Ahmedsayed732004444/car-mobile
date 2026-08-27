@@ -6,6 +6,7 @@ import 'package:car_mediator_mobile/widgets/components.dart';
 import 'package:car_mediator_mobile/widgets/custom_button.dart';
 import 'package:car_mediator_mobile/widgets/custom_loading.dart';
 import 'package:car_mediator_mobile/widgets/vendor/vendor_confirm_pledge_dialog.dart';
+import 'package:car_mediator_mobile/widgets/map_picker_screen.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -414,15 +415,20 @@ class _SendShippingInfoBottomSheet extends StatefulWidget {
 
 class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomSheet> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _addressController = TextEditingController();
   final _phoneController = TextEditingController();
   final _lengthController = TextEditingController();
   final _widthController = TextEditingController();
   final _heightController = TextEditingController();
   final _weightController = TextEditingController();
+  
+  double? _lat;
+  double? _lng;
 
   @override
   void dispose() {
+    _nameController.dispose();
     _addressController.dispose();
     _phoneController.dispose();
     _lengthController.dispose();
@@ -434,10 +440,6 @@ class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomShe
 
   @override
   Widget build(BuildContext context) {
-    final _isArabic = context.read<AppLanguageProvider>().isArabic;
-    final _cacheProvider = context.read<CacheProvider>();
-    final _shippingProvider = Provider.of<ShippingProvider>(context);
-
     return SingleChildScrollView(
       controller: widget.scrollController,
       padding: EdgeInsets.only(
@@ -469,34 +471,40 @@ class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomShe
               ContainerFieldsWidget(
                 title: 'عنوانك',
                 children: [
-                  DropdownSearch<CityModel>(
-                    dropdownDecoratorProps: customDropdownDecoratorProps(
-                        label: 'مدينتك', hint: 'إختر مدينتك'),
-                    popupProps: popupPropsBottomSheet<CityModel>(
-                      titleBottomSheet: 'مدينتك',
-                      itemBuilder: (BuildContext context, CityModel item,
-                          bool isSelected) {
-                        return CustomContainerListTileWidget(
-                          title:
-                          _isArabic ? item.cityNameAr : item.cityNameEn,
-                        );
-                      },
-                    ),
-                    items: _cacheProvider.citiesList,
-                    selectedItem: _shippingProvider.myCitySelectedModel,
-                    itemAsString: (CityModel? u) =>
-                    (_isArabic ? u?.cityNameAr : u?.cityNameEn) ?? '',
-                    validator: FormValidatorUtils.objectValidator,
-                    onChanged: (CityModel? selection) =>
-                        _shippingProvider.selectedMyCity(selection),
-                  ),
-                  const SizedBox(height: 16,),
                   CustomTextField(
-                    label:'الحي - الشارع',
-                    controller: _addressController,
+                    label: 'اسم المرسل',
+                    controller: _nameController,
                     validator: (value) => FormValidatorUtils.textValidator(value,
                       isRequired: true,
                       maxLength: 255,),
+                  ),
+                  const SizedBox(height: 16,),
+                  GestureDetector(
+                    onTap: () async {
+                      final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MapPickerScreen(),
+                        ),
+                      );
+                      if (result != null) {
+                        setState(() {
+                          _lat = result['lat'];
+                          _lng = result['lng'];
+                          _addressController.text = result['address'];
+                        });
+                      }
+                    },
+                    child: AbsorbPointer(
+                      child: CustomTextField(
+                        label: 'العنوان',
+                        controller: _addressController,
+                        maxLines: null,
+                        validator: (value) => FormValidatorUtils.textValidator(value,
+                          isRequired: true,
+                          maxLength: 255,),
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 16,),
                   CustomTextField(
@@ -566,8 +574,11 @@ class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomShe
                       builder: (dialogContext) => VendorConfirmPledgeDialog(
                         onConfirm: () {
                           widget.onSend(jsonEncode({
-                            'city': _shippingProvider.myCitySelectedModel?.cityNameEn ?? '',
+                            'name': _nameController.text.toString(),
+                            'city': '', // Removed from UI
                             'address' : _addressController.text.toString(),
+                            'lat' : _lat,
+                            'lng' : _lng,
                             'phone' : _phoneController.text.toString(),
                             'length' : _lengthController.text.toString(),
                             'width' : _widthController.text.toString(),
