@@ -21,9 +21,11 @@ import '../../../../core/providers/shipping_provider.dart';
 import '../../../../core/styles/styles.dart';
 import '../../../../core/utils/connection_utils.dart';
 import '../../../../core/utils/constants/colors_constants.dart';
+import '../../../../core/utils/constants/assets_path.dart';
 import '../../../../core/utils/dialogUtils.dart';
 import '../../../../core/utils/form_validator.dart';
 import '../../../../core/utils/image_picker_bottom_sheet_utils.dart';
+import '../../../../core/utils/launcher_url_utils.dart';
 import '../../../../core/utils/size_config.dart';
 import '../../../../models/city_model.dart';
 import '../../../../widgets/container_fields_widget.dart';
@@ -137,6 +139,31 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           elevation: 0,
           actions:  [
+            IconButton(
+              icon: Image.asset(AssetsPath.whatsapp, width: 28, height: 28),
+              onPressed: () {
+                final prov = context.read<ConversationProvider>();
+                String phone = '';
+                try {
+                  final conv = prov.conversationModelList.firstWhere((c) => c.conversationId == widget.conversationId);
+                  phone = conv.receiverPhone;
+                } catch (e) {
+                  // Ignore
+                }
+                
+                if (phone.isEmpty) {
+                  if (widget.receiverName.startsWith('user-05') && widget.receiverName.length >= 14) {
+                    phone = widget.receiverName.substring(5);
+                  }
+                }
+                
+                if (phone.isNotEmpty) {
+                  LauncherUrlUtils.openWhatsApp(context, phone: phone);
+                } else {
+                  ToastHelper.showError('رقم الواتساب غير متوفر');
+                }
+              },
+            ),
             if(widget.isVendor)
             IconButton(onPressed: (){
               showModalBottomSheet(

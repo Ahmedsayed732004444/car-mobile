@@ -50,6 +50,7 @@ class ConversationModel{
   final int responseId;
   final int vendorId;
   final String receiverName;
+  final String receiverPhone;
   final String receiverLogo;
 
   const ConversationModel({
@@ -58,6 +59,7 @@ class ConversationModel{
     this.responseId = 0,
     this.vendorId = 0,
     this.receiverName = '',
+    this.receiverPhone = '',
     this.receiverLogo = '',
   });
 
@@ -68,6 +70,7 @@ class ConversationModel{
       responseId: json?['response_id'] ?? 0,
       vendorId: json?['vendor_id'] ?? 0,
       receiverName: json?['receiver_name'] ?? '',
+      receiverPhone: json?['receiver_phone'] ?? '',
       receiverLogo: json?['receiver_logo'] ?? '',
     );
   }
