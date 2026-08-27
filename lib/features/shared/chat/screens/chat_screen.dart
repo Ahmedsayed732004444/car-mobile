@@ -27,6 +27,8 @@ import '../../../../core/utils/form_validator.dart';
 import '../../../../core/utils/image_picker_bottom_sheet_utils.dart';
 import '../../../../core/utils/launcher_url_utils.dart';
 import '../../../../core/utils/size_config.dart';
+import '../../../../core/providers/users/responses_my_request_provider.dart';
+import '../../../../core/providers/vendors/response_request_provider.dart';
 import '../../../../models/city_model.dart';
 import '../../../../widgets/container_fields_widget.dart';
 import '../../../../widgets/custom_container_listtile_widget.dart';
@@ -141,7 +143,7 @@ class _ChatScreenState extends State<ChatScreen> {
           actions:  [
             IconButton(
               icon: Image.asset(AssetsPath.whatsapp, width: 28, height: 28),
-              onPressed: () {
+              onPressed: () async {
                 final prov = context.read<ConversationProvider>();
                 String phone = '';
                 try {
@@ -155,6 +157,28 @@ class _ChatScreenState extends State<ChatScreen> {
                   if (widget.receiverName.startsWith('user-05') && widget.receiverName.length >= 14) {
                     phone = widget.receiverName.substring(5);
                   }
+                }
+
+                if (phone.isEmpty && widget.responseId > 0) {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => const Center(child: CircularProgressIndicator()),
+                  );
+                  if (!widget.isVendor) {
+                    final responsesProv = context.read<ResponsesMyRequestProvider>();
+                    await responsesProv.getResponseRequestById(responseId: widget.responseId);
+                    if (responsesProv.detailsResponseRequestModel != null) {
+                      phone = responsesProv.detailsResponseRequestModel!.phoneContact;
+                    }
+                  } else {
+                    final vendorProv = context.read<ResponseRequestProvider>();
+                    await vendorProv.detailsResponseRequest(responseId: widget.responseId);
+                    if (vendorProv.detailsResponseRequestModel != null) {
+                      phone = vendorProv.detailsResponseRequestModel!.userPhone;
+                    }
+                  }
+                  if(context.mounted) Navigator.pop(context);
                 }
                 
                 if (phone.isNotEmpty) {
