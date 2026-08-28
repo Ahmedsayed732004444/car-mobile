@@ -280,13 +280,32 @@ class _ChatScreenState extends State<ChatScreen> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             if (msg.body != null && (msg.body?.isNotEmpty ?? false))
-                            Text(
-                              msg.body,
-                              style: TextStyle(
-                                color: isMe ? Colors.white : Colors.black,
-                                fontSize: 16,
+                              msg.body.startsWith('http')
+                                ? InkWell(
+                                    onTap: () => LauncherUrlUtils.openUrl(msg.body),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                      decoration: BoxDecoration(
+                                        color: isMe ? Colors.white.withOpacity(0.2) : AppColor.primaryColor.withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(8)
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(Icons.location_on, color: isMe ? Colors.white : AppColor.primaryColor, size: 20),
+                                          const SizedBox(width: 8),
+                                          Text('الموقع على الخريطة', style: TextStyle(color: isMe ? Colors.white : AppColor.primaryColor, decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
+                                        ],
+                                      )
+                                    ),
+                                  )
+                                : Text(
+                                msg.body,
+                                style: TextStyle(
+                                  color: isMe ? Colors.white : Colors.black,
+                                  fontSize: 16,
+                                ),
                               ),
-                            ),
                             if (msg.image != null && (msg.image?.isNotEmpty ?? false))
                               FutureBuilder<String?>(
                                 future: SecureStorage.getToken(),
@@ -406,7 +425,17 @@ class _ChatScreenState extends State<ChatScreen> {
       return;
     }
 
-    final text = (isSendShippingRequest == false) ? controller.text.trim() : '';
+    String text = controller.text.trim();
+    if (isSendShippingRequest == true && shippingInfo != null && shippingInfo.isNotEmpty) {
+      try {
+        final parsed = jsonDecode(shippingInfo);
+        if (parsed['lat'] != null && parsed['lng'] != null) {
+          text = 'https://www.google.com/maps/search/?api=1&query=${parsed['lat']},${parsed['lng']}';
+        }
+      } catch (e) {
+        text = '';
+      }
+    }
     
     if(!(text.isNotEmpty || provider.fileImage != null) && (isSendShippingRequest == false)){
       ToastHelper.showWarning('لا توجد بيانات للإرسال');

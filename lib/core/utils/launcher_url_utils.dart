@@ -100,4 +100,13 @@ class LauncherUrlUtils {
   //     showSnackBar(context: context, message: 'We did not find the «Telegram» application on your phone, please install it and try again');
   //   }
   // }
+
+  static Future<void> openUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else {
+      ToastHelper.showError('تعذر فتح الرابط');
+    }
+  }
 }

@@ -115,7 +115,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
       }
     } catch (e) {
       setState(() {
-        _currentAddress = "موقع غير معروف";
+        _currentAddress = "${position.latitude.toStringAsFixed(4)}, ${position.longitude.toStringAsFixed(4)}";
         _isLoading = false;
       });
     }
