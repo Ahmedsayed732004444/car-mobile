@@ -24,6 +24,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
   String _currentAddress = "جاري تحديد الموقع...";
   bool _isLoading = true;
   bool _isSearching = false;
+  bool _isLocating = false;
   List<Location> _searchResults = [];
   List<String> _searchResultNames = [];
   Timer? _debounce;
@@ -42,6 +43,8 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
   }
 
   Future<void> _determinePosition() async {
+    setState(() => _isLocating = true);
+
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       _setFallbackPosition();
@@ -65,10 +68,21 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
     try {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.high);
+      final newPos = LatLng(position.latitude, position.longitude);
+
+      // تحريك الكاميرا للموقع الحالي
+      if (_controller.isCompleted) {
+        final mapController = await _controller.future;
+        await mapController.animateCamera(
+          CameraUpdate.newCameraPosition(CameraPosition(target: newPos, zoom: 16)),
+        );
+      }
+
       setState(() {
-        _currentPosition = LatLng(position.latitude, position.longitude);
+        _currentPosition = newPos;
+        _isLocating = false;
       });
-      _updateAddress(_currentPosition);
+      _updateAddress(newPos);
     } catch (e) {
       _setFallbackPosition();
     }
@@ -78,6 +92,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
     setState(() {
       _currentPosition = widget.initialLocation ?? const LatLng(24.7136, 46.6753);
       _isLoading = false;
+      _isLocating = false;
     });
     _updateAddress(_currentPosition);
   }
@@ -120,10 +135,10 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
     _debounce = Timer(const Duration(milliseconds: 700), () async {
       try {
         List<Location> locations = await locationFromAddress(query);
-        List<Placemark> names = [];
         List<String> resultNames = [];
         for (var loc in locations.take(5)) {
-          List<Placemark> pm = await placemarkFromCoordinates(loc.latitude, loc.longitude);
+          List<Placemark> pm =
+              await placemarkFromCoordinates(loc.latitude, loc.longitude);
           if (pm.isNotEmpty) {
             Placemark p = pm.first;
             resultNames.add(
@@ -211,7 +226,7 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
             },
             onTap: _onMapTap,
             myLocationEnabled: true,
-            myLocationButtonEnabled: true,
+            myLocationButtonEnabled: false, // نعطل الزر الافتراضي ونضع زرنا
           ),
 
           // أيقونة المنتصف
@@ -232,7 +247,10 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
                     boxShadow: const [
-                      BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 3)),
+                      BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 8,
+                          offset: Offset(0, 3)),
                     ],
                   ),
                   child: TextField(
@@ -255,9 +273,11 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
                               },
                             )
                           : null,
-                      suffixIcon: const Icon(Icons.search, color: AppColor.primaryColor),
+                      suffixIcon: const Icon(Icons.search,
+                          color: AppColor.primaryColor),
                       border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 14),
                     ),
                   ),
                 ),
@@ -270,28 +290,55 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: const [
-                        BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, 3)),
+                        BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 8,
+                            offset: Offset(0, 3)),
                       ],
                     ),
                     child: ListView.separated(
                       shrinkWrap: true,
                       padding: EdgeInsets.zero,
                       itemCount: _searchResults.length,
-                      separatorBuilder: (_, __) => const Divider(height: 1),
+                      separatorBuilder: (_, __) =>
+                          const Divider(height: 1),
                       itemBuilder: (context, index) {
                         return ListTile(
-                          leading: const Icon(Icons.location_on_outlined, color: AppColor.primaryColor),
+                          leading: const Icon(Icons.location_on_outlined,
+                              color: AppColor.primaryColor),
                           title: Text(
                             _searchResultNames[index],
                             textAlign: TextAlign.right,
                             style: const TextStyle(fontSize: 13),
                           ),
-                          onTap: () => _goToLocation(_searchResults[index], _searchResultNames[index]),
+                          onTap: () => _goToLocation(
+                              _searchResults[index],
+                              _searchResultNames[index]),
                         );
                       },
                     ),
                   ),
               ],
+            ),
+          ),
+
+          // زر الموقع الحالي (أسفل اليمين فوق الكارد)
+          Positioned(
+            bottom: 160,
+            right: 16,
+            child: FloatingActionButton(
+              mini: true,
+              backgroundColor: Colors.white,
+              elevation: 4,
+              onPressed: _isLocating ? null : _determinePosition,
+              child: _isLocating
+                  ? const SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                          strokeWidth: 2, color: AppColor.primaryColor),
+                    )
+                  : const Icon(Icons.my_location, color: AppColor.primaryColor),
             ),
           ),
 
@@ -306,7 +353,10 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: const [
-                  BoxShadow(color: Colors.black26, blurRadius: 10, offset: Offset(0, 5)),
+                  BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10,
+                      offset: Offset(0, 5)),
                 ],
               ),
               child: Column(
@@ -319,14 +369,19 @@ class _MapPickerScreenState extends State<MapPickerScreen> {
                         const SizedBox(
                           width: 16,
                           height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2, color: AppColor.primaryColor),
+                          child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: AppColor.primaryColor),
                         ),
                       if (_isLoading) const SizedBox(width: 8),
                       Flexible(
                         child: Text(
-                          _isLoading ? "جاري تحديد الموقع..." : _currentAddress,
+                          _isLoading
+                              ? "جاري تحديد الموقع..."
+                              : _currentAddress,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                          style: const TextStyle(
+                              fontSize: 14, fontWeight: FontWeight.w600),
                         ),
                       ),
                     ],
