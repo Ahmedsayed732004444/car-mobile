@@ -7,6 +7,7 @@ import 'package:car_mediator_mobile/widgets/custom_button.dart';
 import 'package:car_mediator_mobile/widgets/custom_loading.dart';
 import 'package:car_mediator_mobile/widgets/vendor/vendor_confirm_pledge_dialog.dart';
 import 'package:car_mediator_mobile/widgets/map_picker_screen.dart';
+import 'package:car_mediator_mobile/core/services/shared/vendor_shipping_info_storage.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -142,7 +143,7 @@ class _ChatScreenState extends State<ChatScreen> {
           elevation: 0,
           actions:  [
             IconButton(
-              icon: Image.asset(AssetsPath.whatsapp, width: 28, height: 28),
+              icon: Image.asset(AssetsPath.whatsapp, width: 28, height: 28, color: Colors.green),
               onPressed: () async {
                 final prov = context.read<ConversationProvider>();
                 String phone = '';
@@ -478,6 +479,25 @@ class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomShe
   double? _lng;
 
   @override
+  void initState() {
+    super.initState();
+    _loadSavedInfo();
+  }
+
+  Future<void> _loadSavedInfo() async {
+    final saved = await VendorShippingInfoStorage.load();
+    if (saved != null) {
+      setState(() {
+        _nameController.text = saved['name'] ?? '';
+        _phoneController.text = saved['phone'] ?? '';
+        _addressController.text = saved['address'] ?? '';
+        _lat = (saved['lat'] as num?)?.toDouble();
+        _lng = (saved['lng'] as num?)?.toDouble();
+      });
+    }
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _addressController.dispose();
@@ -488,6 +508,7 @@ class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomShe
     _weightController.dispose();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -624,6 +645,14 @@ class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomShe
                       barrierDismissible: false,
                       builder: (dialogContext) => VendorConfirmPledgeDialog(
                         onConfirm: () {
+                          // حفظ بيانات التاجر محلياً للاستخدام المستقبلي
+                          VendorShippingInfoStorage.save(
+                            name: _nameController.text.trim(),
+                            phone: _phoneController.text.trim(),
+                            address: _addressController.text.trim(),
+                            lat: _lat,
+                            lng: _lng,
+                          );
                           widget.onSend(jsonEncode({
                             'name': _nameController.text.toString(),
                             'city': '', // Removed from UI
