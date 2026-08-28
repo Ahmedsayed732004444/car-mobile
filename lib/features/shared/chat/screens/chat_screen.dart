@@ -142,7 +142,7 @@ class _ChatScreenState extends State<ChatScreen> {
           elevation: 0,
           actions:  [
             IconButton(
-              icon: Image.asset(AssetsPath.whatsapp, width: 28, height: 28),
+              icon: Image.asset(AssetsPath.whatsapp, width: 28, height: 28, color: Colors.green),
               onPressed: () async {
                 final prov = context.read<ConversationProvider>();
                 String phone = '';
