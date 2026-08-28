@@ -485,6 +485,27 @@ class FullImagePage extends StatelessWidget {
 }
 
 
+class CartonControllers {
+  final lengthController = TextEditingController();
+  final widthController = TextEditingController();
+  final heightController = TextEditingController();
+  final weightController = TextEditingController();
+
+  void dispose() {
+    lengthController.dispose();
+    widthController.dispose();
+    heightController.dispose();
+    weightController.dispose();
+  }
+  
+  Map<String, dynamic> toJson() => {
+    'length': lengthController.text.trim(),
+    'width': widthController.text.trim(),
+    'height': heightController.text.trim(),
+    'weight': weightController.text.trim(),
+  };
+}
+
 class _SendShippingInfoBottomSheet extends StatefulWidget {
   const _SendShippingInfoBottomSheet({super.key, required this.onSend, required this.scrollController});
   final Function(String detailShipping) onSend;
@@ -499,10 +520,8 @@ class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomShe
   final _nameController = TextEditingController();
   final _addressController = TextEditingController();
   final _phoneController = TextEditingController();
-  final _lengthController = TextEditingController();
-  final _widthController = TextEditingController();
-  final _heightController = TextEditingController();
-  final _weightController = TextEditingController();
+  
+  List<CartonControllers> _cartons = [CartonControllers()];
   
   double? _lat;
   double? _lng;
@@ -531,13 +550,11 @@ class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomShe
     _nameController.dispose();
     _addressController.dispose();
     _phoneController.dispose();
-    _lengthController.dispose();
-    _widthController.dispose();
-    _heightController.dispose();
-    _weightController.dispose();
+    for (var carton in _cartons) {
+      carton.dispose();
+    }
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -618,50 +635,78 @@ class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomShe
                 ],
               ),
               const SizedBox(height: 16),
-              ContainerFieldsWidget(
-                  title: 'التفاصيل',
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(flex:1, child: CustomTextField(
-                          label: 'الطول ( سم )',
-                          controller: _lengthController,
-                          keyboardType: TextInputType.number,
-                          validator: (value) => FormValidatorUtils.textValidator(value,
-                            isRequired: true,),
-                        )),
-                        const SizedBox(width: 10,),
-                        Expanded(flex:1, child: CustomTextField(
-                          label: 'العرض ( سم )',
-                          controller: _widthController,
-                          keyboardType: TextInputType.number,
-                          validator: (value) => FormValidatorUtils.textValidator(value,
-                            isRequired: true,),
-                        )),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        Expanded(flex:1, child: CustomTextField(
-                          label: 'الإرتفاع ( سم )',
-                          controller: _heightController,
-                          keyboardType: TextInputType.number,
-                          validator: (value) => FormValidatorUtils.textValidator(value,
-                            isRequired: true,),
-                        )),
-                        const SizedBox(width: 10,),
-                        Expanded(flex:1, child: CustomTextField(
-                          label: 'الوزن ( كغم )',
-                          controller: _weightController,
-                          keyboardType: TextInputType.number,
-                          validator: (value) => FormValidatorUtils.textValidator(value,
-                            isRequired: true,),
-                        )),
-
-                      ],
-                    ),
-                  ]
+              ..._cartons.asMap().entries.map((entry) {
+                int index = entry.key;
+                CartonControllers carton = entry.value;
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16.0),
+                  child: ContainerFieldsWidget(
+                    title: 'تفاصيل الكرتونة ${index + 1}',
+                    children: [
+                      if (_cartons.length > 1)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                _cartons.removeAt(index);
+                              });
+                            },
+                            child: const Icon(Icons.delete, color: Colors.red),
+                          ),
+                        ),
+                      Row(
+                        children: [
+                          Expanded(flex:1, child: CustomTextField(
+                            label: 'الطول ( سم )',
+                            controller: carton.lengthController,
+                            keyboardType: TextInputType.number,
+                            validator: (value) => FormValidatorUtils.textValidator(value,
+                              isRequired: true,),
+                          )),
+                          const SizedBox(width: 10,),
+                          Expanded(flex:1, child: CustomTextField(
+                            label: 'العرض ( سم )',
+                            controller: carton.widthController,
+                            keyboardType: TextInputType.number,
+                            validator: (value) => FormValidatorUtils.textValidator(value,
+                              isRequired: true,),
+                          )),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(flex:1, child: CustomTextField(
+                            label: 'الإرتفاع ( سم )',
+                            controller: carton.heightController,
+                            keyboardType: TextInputType.number,
+                            validator: (value) => FormValidatorUtils.textValidator(value,
+                              isRequired: true,),
+                          )),
+                          const SizedBox(width: 10,),
+                          Expanded(flex:1, child: CustomTextField(
+                            label: 'الوزن ( كغم )',
+                            controller: carton.weightController,
+                            keyboardType: TextInputType.number,
+                            validator: (value) => FormValidatorUtils.textValidator(value,
+                              isRequired: true,),
+                          )),
+                        ],
+                      ),
+                    ]
+                  ),
+                );
+              }).toList(),
+              
+              TextButton.icon(
+                onPressed: () {
+                  setState(() {
+                    _cartons.add(CartonControllers());
+                  });
+                }, 
+                icon: const Icon(Icons.add, color: AppColor.primaryColor), 
+                label: const Text('إضافة كرتونة أخرى', style: TextStyle(color: AppColor.primaryColor))
               ),
               const SizedBox(height: 10),
               // button
@@ -689,10 +734,11 @@ class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomShe
                             'lat' : _lat,
                             'lng' : _lng,
                             'phone' : _phoneController.text.toString(),
-                            'length' : _lengthController.text.toString(),
-                            'width' : _widthController.text.toString(),
-                            'height' : _heightController.text.toString(),
-                            'weight' : _weightController.text.toString(),
+                            'length' : _cartons.isNotEmpty ? _cartons.first.lengthController.text.toString() : '',
+                            'width' : _cartons.isNotEmpty ? _cartons.first.widthController.text.toString() : '',
+                            'height' : _cartons.isNotEmpty ? _cartons.first.heightController.text.toString() : '',
+                            'weight' : _cartons.isNotEmpty ? _cartons.first.weightController.text.toString() : '',
+                            'packages': _cartons.map((c) => c.toJson()).toList(),
                           }));
                         },
                       ),
