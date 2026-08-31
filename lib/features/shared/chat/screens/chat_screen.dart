@@ -641,7 +641,7 @@ class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomShe
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: ContainerFieldsWidget(
-                    title: 'تفاصيل الكرتونة ${index + 1}',
+                    title: 'تفاصيل شحنة ${index + 1}',
                     children: [
                       if (_cartons.length > 1)
                         Align(
@@ -706,7 +706,7 @@ class _SendShippingInfoBottomSheetState extends State<_SendShippingInfoBottomShe
                   });
                 }, 
                 icon: const Icon(Icons.add, color: AppColor.primaryColor), 
-                label: const Text('إضافة كرتونة أخرى', style: TextStyle(color: AppColor.primaryColor))
+                label: const Text('إضافة شحنة أخرى', style: TextStyle(color: AppColor.primaryColor))
               ),
               const SizedBox(height: 10),
               // button
