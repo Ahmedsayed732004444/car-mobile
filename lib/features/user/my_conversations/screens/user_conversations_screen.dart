@@ -129,7 +129,7 @@ class _UserConversationScreenState extends State<UserConversationScreen> {
                             assetDefaultPath: AssetsPath.logo,
                           ),
                         ),
-                        title: Text(Helper.formatDisplayName(item.receiverName), style: txtSemiBold035,),
+                        title: Text(Helper.formatUserName(item.receiverName ?? ''), style: txtSemiBold035,),
                         subtitle: Text('رقم الطلب : ${Utils.numberFormatting(item.requestId)}'),
                         trailing: const Icon(Icons.arrow_forward_ios_rounded, color: AppColor.primaryColor, size: 18,),
                       ),

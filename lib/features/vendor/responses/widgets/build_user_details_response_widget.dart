@@ -2,8 +2,8 @@ import 'package:car_mediator_mobile/core/styles/styles.dart';
 import 'package:car_mediator_mobile/core/utils/constants/assets_path.dart';
 import 'package:car_mediator_mobile/core/utils/size_config.dart';
 import 'package:car_mediator_mobile/widgets/custom_button.dart';
-import 'package:flutter/material.dart';
 import 'package:car_mediator_mobile/core/helpers/helpers.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../core/utils/constants/colors_constants.dart';
 import '../../../../core/utils/launcher_url_utils.dart';
@@ -36,7 +36,7 @@ class BuildUserDetailsResponseWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                Helper.formatDisplayName(model?.userName),
+                Helper.formatUserName(model?.userName ?? ''),
                 style: txtBold04,
               ),
               SizedBox(

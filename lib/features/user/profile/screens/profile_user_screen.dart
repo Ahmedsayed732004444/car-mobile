@@ -10,6 +10,7 @@ import '../../../../core/providers/users/profile_user_provider.dart';
 import '../../../../core/styles/styles.dart';
 import '../../../../core/utils/date_parser_utils.dart';
 import '../../../../core/utils/size_config.dart';
+import '../../../../core/helpers/helpers.dart';
 import '../../../../widgets/arrow_back_widget.dart';
 import '../widgets/build_manage_profile_user_widget.dart';
 
@@ -36,7 +37,7 @@ class _ProfileVendorScreenState extends State<ProfileVendorScreen> {
   }
 
   void initValuesProfile(ProfileUserProvider provider){
-    nameController.text = provider.profileUserModel?.name ?? '';
+    nameController.text = Helper.formatUserName(provider.profileUserModel?.name ?? '');
   }
 
   @override
