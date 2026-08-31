@@ -59,7 +59,7 @@ class ResponseVendorCard extends StatelessWidget {
       customField1 = _BuildResponseCardItem(
         icon: Icons.attach_money,
         label: 'الميزانية :',
-        value: _getFieldValue(['ميزاني', 'budget']),
+        value: _getFieldValue(['ميزان', 'budget']),
       );
       customField2 = _BuildResponseCardItem(
         icon: Icons.description,
