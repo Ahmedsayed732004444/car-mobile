@@ -20,8 +20,64 @@ class ResponseVendorCard extends StatelessWidget {
   const ResponseVendorCard({super.key, required this.model});
   final ResponseRequestModel model;
 
+  String _getFieldValue(String keyContains) {
+    try {
+      final field = model.fields.firstWhere((element) {
+        return element['key'].toString().contains(keyContains);
+      });
+      return field['value'].toString();
+    } catch (e) {
+      return 'غير محدد';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final bool isSpareParts = model.catNameAr.contains('قطع غيار');
+    final bool isUsedCars = model.catNameAr.contains('مستعمل');
+
+    Widget customField1;
+    Widget customField2;
+
+    if (isSpareParts) {
+      String carName = _getFieldValue('السيارة');
+      if (carName == 'غير محدد' && model.brandsNames.isNotEmpty) {
+        carName = model.brandsNames.join(' , ');
+      }
+      customField1 = _BuildResponseCardItem(
+        icon: Icons.settings,
+        label: 'اسم القطعة :',
+        value: _getFieldValue('القطعة'),
+      );
+      customField2 = _BuildResponseCardItem(
+        icon: Icons.directions_car,
+        label: 'اسم السيارة :',
+        value: carName,
+      );
+    } else if (isUsedCars) {
+      customField1 = _BuildResponseCardItem(
+        icon: Icons.attach_money,
+        label: 'الميزانية :',
+        value: _getFieldValue('الميزانية'),
+      );
+      customField2 = _BuildResponseCardItem(
+        icon: Icons.description,
+        label: 'تفاصيل الطلب :',
+        value: model.description.isNotEmpty ? model.description : 'غير محدد',
+      );
+    } else {
+      customField1 = _BuildResponseCardItem(
+        icon: Icons.date_range,
+        label: 'تاريخ الطلب :',
+        value: DateParserUtils.getDateWithTimeFromString(model.requestDate),
+      );
+      customField2 = _BuildResponseCardItem(
+        icon: Icons.date_range,
+        label: 'تاريخ الرد :',
+        value: DateParserUtils.getDateWithTimeFromString(model.responseDate),
+      );
+    }
+
     return Material(
       color: Colors.white,
       borderRadius: BorderRadius.circular(10),
@@ -120,21 +176,11 @@ class ResponseVendorCard extends StatelessWidget {
             const SizedBox(
               height: 5,
             ),
-            _BuildResponseCardItem(
-              icon: Icons.date_range,
-              label: 'تاريخ الطلب :',
-              value:
-                  DateParserUtils.getDateWithTimeFromString(model.requestDate),
-            ),
+            customField1,
             const SizedBox(
               height: 5,
             ),
-            _BuildResponseCardItem(
-              icon: Icons.date_range,
-              label: 'تاريخ الرد :',
-              value:
-                  DateParserUtils.getDateWithTimeFromString(model.responseDate),
-            ),
+            customField2,
             const SizedBox(
               height: 5,
             ),
@@ -154,18 +200,20 @@ class ResponseVendorCard extends StatelessWidget {
             const SizedBox(
               height: 8,
             ),
-            Text(
-              model.description,
-              style: TextStyle(
-                  fontSize: SizeConfig.widthResponsive(0.04),
-                  color: AppColor.greyColor,
-                  fontWeight: FontWeight.w400),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 2,
-            ),
-            const SizedBox(
-              height: 8,
-            ),
+            if (!isUsedCars)
+              Text(
+                model.description,
+                style: TextStyle(
+                    fontSize: SizeConfig.widthResponsive(0.04),
+                    color: AppColor.greyColor,
+                    fontWeight: FontWeight.w400),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
+            if (!isUsedCars)
+              const SizedBox(
+                height: 8,
+              ),
             CustomButton(
               label: 'تفاصيل الرد',
               txtSize: SizeConfig.widthResponsive(0.04),
