@@ -20,10 +20,11 @@ class ResponseVendorCard extends StatelessWidget {
   const ResponseVendorCard({super.key, required this.model});
   final ResponseRequestModel model;
 
-  String _getFieldValue(String keyContains) {
+  String _getFieldValue(List<String> keywords) {
     try {
       final field = model.fields.firstWhere((element) {
-        return element['key'].toString().contains(keyContains);
+        final keyStr = element['key'].toString().toLowerCase();
+        return keywords.any((k) => keyStr.contains(k.toLowerCase()));
       });
       return field['value'].toString();
     } catch (e) {
@@ -40,14 +41,14 @@ class ResponseVendorCard extends StatelessWidget {
     Widget customField2;
 
     if (isSpareParts) {
-      String carName = _getFieldValue('السيارة');
+      String carName = _getFieldValue(['سيار', 'car']);
       if (carName == 'غير محدد' && model.brandsNames.isNotEmpty) {
         carName = model.brandsNames.join(' , ');
       }
       customField1 = _BuildResponseCardItem(
         icon: Icons.settings,
         label: 'اسم القطعة :',
-        value: _getFieldValue('القطعة'),
+        value: _getFieldValue(['القطعة', 'قطع', 'part']),
       );
       customField2 = _BuildResponseCardItem(
         icon: Icons.directions_car,
@@ -58,7 +59,7 @@ class ResponseVendorCard extends StatelessWidget {
       customField1 = _BuildResponseCardItem(
         icon: Icons.attach_money,
         label: 'الميزانية :',
-        value: _getFieldValue('الميزانية'),
+        value: _getFieldValue(['ميزاني', 'budget']),
       );
       customField2 = _BuildResponseCardItem(
         icon: Icons.description,
