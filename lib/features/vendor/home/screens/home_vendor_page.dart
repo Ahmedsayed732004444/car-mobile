@@ -169,21 +169,7 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Expanded(
-                  flex: 1,
-                  child: DashboardItemHome(
-                    title: 'تقييمات العملاء',
-                    subTitle: 'تقييماتي وملفي',
-                    icon: const Icon(Icons.star_rate, color: AppColor.primaryColor, size: 32),
-                    onTap: (){
-                      final userId = context.read<AuthProvider>().currentUseModel?.id ?? 0;
-                      navigationPush(context, VendorProfileScreen(vendorId: userId, isVendorView: true));
-                    },
-                  ),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
+
                 Expanded(
                   flex: 1,
                   child: DashboardItemHome(
