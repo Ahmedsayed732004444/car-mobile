@@ -54,7 +54,7 @@ class _ConfirmPledgeDialogState extends State<ConfirmPledgeDialog> {
             // Checkbox 1
             _buildCheckboxRow(
               'عند الشراء من التطبيق ',
-              'أتعهد بدفع 5 ريالات عن كل عملية شراء.',
+              'أتعهد بدفع 5 ريال عن كل عملية شراء.',
               isChecked1,
               (val) => setState(() => isChecked1 = val ?? false),
             ),
@@ -63,7 +63,7 @@ class _ConfirmPledgeDialogState extends State<ConfirmPledgeDialog> {
             // Checkbox 2
             _buildCheckboxRow(
               'عند الشراء خارج التطبيق ',
-              'إذا تعرفت على متجر من خلال التطبيق ثم اشتريت منه مستقبلا، أتعهد بدفع 5 ريالات عن كل عملية شراء.',
+              'إذا تعرفت على متجر من خلال التطبيق ثم اشتريت منه مستقبلا، أتعهد بدفع 5 ريال عن كل عملية شراء.',
               isChecked2,
               (val) => setState(() => isChecked2 = val ?? false),
             ),
