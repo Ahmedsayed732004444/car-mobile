@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:car_mediator_mobile/core/helpers/toast_helper.dart';
+import 'package:car_mediator_mobile/core/helpers/helpers.dart';
 import 'package:car_mediator_mobile/widgets/components.dart';
 import 'package:car_mediator_mobile/widgets/custom_button.dart';
 import 'package:car_mediator_mobile/widgets/custom_loading.dart';
@@ -113,7 +114,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       children: [
                         Text('رقم الطلب : ${widget.requestId}', style: txtLightSemiBold035,),
                         Text(
-                          '${widget.receiverName}',
+                          Helper.formatDisplayName(widget.receiverName),
                           style: txtSemiBold033,
                         ),
                         if (!widget.isVendor && provider.vendor != null)

@@ -8,6 +8,7 @@ import '../../core/utils/constants/colors_constants.dart';
 import '../../core/utils/dialogUtils.dart';
 import '../../core/utils/size_config.dart';
 import '../../features/user/profile/screens/profile_user_screen.dart';
+import '../../core/helpers/helpers.dart';
 import '../../models/user_model.dart';
 import '../components.dart';
 import '../custom_button.dart';
@@ -48,7 +49,7 @@ class InfoAccountCardWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('${ _authProvider.currentUseModel?.name ?? 'مستخدم مجهول'}',overflow:TextOverflow.ellipsis ,style: txtMedium04),
+                  Text(Helper.formatDisplayName(_authProvider.currentUseModel?.name),overflow:TextOverflow.ellipsis ,style: txtMedium04),
                   // if(model?.created_at != null && model?.created_at != '')
                   // Padding(padding: const EdgeInsets.only(top: 5),child: Text('${'عضو منذ'} ${DateParser.getDateFromString(model?.created_at ?? '')}',overflow:TextOverflow.ellipsis ,style: grey035W500(width)),),
                   CustomButton(
