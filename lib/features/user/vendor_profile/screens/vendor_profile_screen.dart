@@ -165,7 +165,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                       Wrap(
                         alignment: WrapAlignment.center,
                         spacing: 12,
-                        runSpacing: 8,
+                        runSpacing: 10,
                         children: [
                           if (vendor.memberSince.isNotEmpty)
                             _buildVendorInfoBadge(
@@ -176,6 +176,11 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                             _buildVendorInfoBadge(
                               icon: Icons.assignment_outlined,
                               label: 'السجل التجاري: ${vendor.commercialRecord}',
+                            ),
+                          if (vendor.totalResponses > 0)
+                            _buildVendorInfoBadge(
+                              icon: Icons.handshake_outlined,
+                              label: 'تعامل مع: ${vendor.totalResponses} عميل',
                             ),
                         ],
                       ),
@@ -408,3 +413,4 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
     );
   }
 }
+

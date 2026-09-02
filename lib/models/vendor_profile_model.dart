@@ -58,6 +58,7 @@ class VendorProfileModel {
   final int totalReviews;
   final String memberSince;
   final String commercialRecord;
+  final int totalResponses;
 
   const VendorProfileModel({
     this.id = 0,
@@ -69,6 +70,7 @@ class VendorProfileModel {
     this.totalReviews = 0,
     this.memberSince = '',
     this.commercialRecord = '',
+    this.totalResponses = 0,
   });
 
   factory VendorProfileModel.fromJson(Map<String, dynamic>? json) {
@@ -82,6 +84,8 @@ class VendorProfileModel {
       totalReviews: json?['total_reviews'] ?? 0,
       memberSince: json?['member_since'] ?? '',
       commercialRecord: json?['commercial_record'] ?? '',
+      totalResponses: json?['total_responses'] ?? 0,
     );
   }
 }
+
