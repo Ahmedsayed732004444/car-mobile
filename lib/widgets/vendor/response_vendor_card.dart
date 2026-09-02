@@ -122,31 +122,36 @@ class ResponseVendorCard extends StatelessWidget {
                           isVendor: true,
                         );
                       },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppColor.primaryColor.withOpacity(0.08),
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: AppColor.primaryColor.withOpacity(0.3)),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            const Icon(
-                              Icons.chat_bubble_outline,
-                              size: 14,
-                              color: AppColor.primaryColor,
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              'الدردشة',
-                              style: TextStyle(
-                                fontSize: SizeConfig.widthResponsive(0.032),
+                      child: Badge(
+                        isLabelVisible: model.unreadMessagesCount > 0,
+                        label: Text(model.unreadMessagesCount.toString()),
+                        backgroundColor: Colors.red,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: AppColor.primaryColor.withOpacity(0.08),
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: AppColor.primaryColor.withOpacity(0.3)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.chat_bubble_outline,
+                                size: 14,
                                 color: AppColor.primaryColor,
-                                fontWeight: FontWeight.bold,
                               ),
-                            ),
-                          ],
+                              const SizedBox(width: 4),
+                              Text(
+                                'الدردشة',
+                                style: TextStyle(
+                                  fontSize: SizeConfig.widthResponsive(0.032),
+                                  color: AppColor.primaryColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -282,3 +287,4 @@ class _BuildResponseCardItem extends StatelessWidget {
     );
   }
 }
+

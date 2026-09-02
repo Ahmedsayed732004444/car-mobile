@@ -64,6 +64,7 @@ class ResponseRequestModel {
   final String requestStatus;
   final String userName;
   final String userPhone;
+  final int unreadMessagesCount;
   final String userLogo;
   final String vendorLogo;
   final double priceResponse;
@@ -93,6 +94,7 @@ class ResponseRequestModel {
     this.requestStatus = '',
     this.userName = '',
     this.userPhone = '',
+      this.unreadMessagesCount = 0,
     this.userLogo = '',
     this.vendorLogo = '',
     this.priceResponse = 0.0,
@@ -134,6 +136,7 @@ class ResponseRequestModel {
       requestStatus: json?['request_status'] ?? '',
       userName: json?['user_name'] ?? '',
       userPhone: json?['user_phone'] ?? '',
+      unreadMessagesCount: json?['unread_messages_count'] ?? 0,
       userLogo: json?['user_logo'] ?? '',
       vendorLogo: json?['vendor_logo'] ?? '',
       priceResponse: double.parse(json?['price_response'] ?? '0.0'),
@@ -146,3 +149,4 @@ class ResponseRequestModel {
     );
   }
 }
+
