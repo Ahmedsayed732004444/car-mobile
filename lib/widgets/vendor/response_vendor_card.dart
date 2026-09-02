@@ -15,6 +15,7 @@ import '../request_status_widget.dart';
 
 import 'package:provider/provider.dart';
 import '../../core/providers/conversation_provider.dart';
+import '../../core/providers/vendors/response_request_provider.dart';
 
 class ResponseVendorCard extends StatelessWidget {
   const ResponseVendorCard({super.key, required this.model});
@@ -106,8 +107,8 @@ class ResponseVendorCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     InkWell(
-                      onTap: () {
-                        context.read<ConversationProvider>().createConversation(
+                      onTap: () async {
+                        await context.read<ConversationProvider>().createConversation(
                           context,
                           body: {
                             'requestId': model.requestId,
@@ -121,6 +122,7 @@ class ResponseVendorCard extends StatelessWidget {
                           receiverLogo: model.userLogo,
                           isVendor: true,
                         );
+                        context.read<ResponseRequestProvider>().refreshGetMyResponseRequests();
                       },
                       child: Badge(
                         isLabelVisible: model.unreadMessagesCount > 0,
@@ -287,4 +289,7 @@ class _BuildResponseCardItem extends StatelessWidget {
     );
   }
 }
+
+
+
 

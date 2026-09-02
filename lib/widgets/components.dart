@@ -6,8 +6,8 @@ import '../core/localization/app_language_provider.dart';
 import '../core/utils/constants/colors_constants.dart';
 import '../core/utils/size_config.dart';
 
-void navigationPush(context, Widget widget) {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
+Future<dynamic> navigationPush(context, Widget widget) {
+  return Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
 }
 
 void navigationPushAndRemoveUntil(context, Widget widget) {
@@ -213,5 +213,6 @@ Decoration whiteBoxDecoration(){
     ],
   );
 }
+
 
 

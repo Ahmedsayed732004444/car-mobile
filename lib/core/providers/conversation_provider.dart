@@ -91,7 +91,7 @@ class ConversationProvider extends ChangeNotifier {
       final _response = await _conversationService.createConversation(body: body);
       if (_response != null) {
         if(_response['success']){
-           navigationPush(context, ChatScreen(
+           await navigationPush(context, ChatScreen(
              conversationId: _response['result']['conversationId'],
              requestId: requestId,
              responseId: responseId,
