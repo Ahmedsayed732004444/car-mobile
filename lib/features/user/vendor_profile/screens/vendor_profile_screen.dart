@@ -393,20 +393,20 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
 
   Widget _buildVendorInfoBadge({required IconData icon, required String label}) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade300, width: 0.8),
+        color: AppColor.primaryColor.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColor.primaryColor.withValues(alpha: 0.2), width: 1.2),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: AppColor.primaryColor),
-          const SizedBox(width: 6),
+          Icon(icon, size: 18, color: AppColor.primaryColor),
+          const SizedBox(width: 8),
           Text(
             label,
-            style: txtRegular04.copyWith(color: Colors.grey[800], fontSize: 12),
+            style: txtBold04.copyWith(color: AppColor.primaryColor, fontSize: 13),
           ),
         ],
       ),
