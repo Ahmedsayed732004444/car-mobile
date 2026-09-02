@@ -1,25 +1,25 @@
 import 'package:car_mediator_mobile/core/styles/styles.dart';
 import 'package:car_mediator_mobile/core/utils/constants/colors_constants.dart';
-import 'package:car_mediator_mobile/core/utils/dialog_utils.dart';
-import 'package:car_mediator_mobile/core/utils/navigation_utils.dart';
-import 'package:car_mediator_mobile/core/utils/size_config.dart';
-import 'package:car_mediator_mobile/features/shared/app_commission/screens/app_commission_screen.dart';
-import 'package:car_mediator_mobile/features/vendor/home/widgets/app_bar_home_vendor_page.dart';
-import 'package:car_mediator_mobile/features/vendor/home/widgets/dashboard_item_home.dart';
-import 'package:car_mediator_mobile/features/vendor/my_conversations/screens/vendor_conversations_screen.dart';
 import 'package:car_mediator_mobile/features/vendor/new_requests/screens/new_request_screen.dart';
-import 'package:car_mediator_mobile/features/vendor/profile/screens/profile_vendor_screen.dart';
-import 'package:car_mediator_mobile/features/vendor/responses/screens/my_response_request_screen.dart';
-import 'package:car_mediator_mobile/features/vendor/specialties/screens/specialties_screen.dart';
+import 'package:car_mediator_mobile/features/user/vendor_profile/screens/vendor_profile_screen.dart';
 import 'package:car_mediator_mobile/widgets/components.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/providers/auth_provider.dart';
-import '../../../core/providers/notifications/notification_badge_provider.dart';
-import '../../../core/services/fcm_service.dart';
-import '../../../widgets/notifications/section_badge_widget.dart';
-import '../widgets/banner_widget.dart';
+import '../../../../core/data_sources/remote/firebase/fcm_service.dart';
+import '../../../../core/providers/auth_provider.dart';
+import '../../../../core/providers/notification_badge_provider.dart';
+import '../../../../core/utils/dialogUtils.dart';
+import '../../../../core/utils/size_config.dart';
+import '../../../../widgets/banners/banner_widget.dart';
+import '../../../../widgets/section_badge_widget.dart';
+import '../../../../widgets/vendor/dashboard_item_home.dart';
+import '../../app_commission/screens/app_commission_screen.dart';
+import '../../my_conversations/screens/vendor_conversations_screen.dart';
+import '../../profile/screens/profile_vendor_screen.dart';
+import '../../responses/screens/my_response_request_screen.dart';
+import '../../specialties/screens/specialties_screen.dart';
+import '../widgets/app_bar_home_vendor_page.dart';
 
 class HomeVendorPage extends StatefulWidget {
   const HomeVendorPage({super.key});
@@ -67,9 +67,9 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
                 child: SectionBadgeWidget(
                   categoryKey: 'customer_requests',
                   child: DashboardItemHome(
-                    title: '????? ???????',
+                    title: 'طلبات العملاء',
                     icon: const Icon(Icons.sticky_note_2, color: AppColor.primaryColor, size: 32,),
-                    subTitle: '??????? ???????',
+                    subTitle: 'الطلبات الجديدة',
                     onTap: (){
                       navigationPush(context, const NewRequestScreen());
                     },
@@ -82,10 +82,10 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
               Expanded(
                 flex: 1,
                 child: SectionBadgeWidget(
-                  categoryKey: 'company_responses', // Keep the same badge key or use conversations badge too? Let's use company_responses, we'll merge them backend.
+                  categoryKey: 'company_responses',
                   child: DashboardItemHome(
-                    title: '???? ????????',
-                    subTitle: '???? ???????',
+                    title: 'ردود ومحادثات',
+                    subTitle: 'ردود الطلبات',
                     icon: const Icon(Icons.reply_all_outlined, color: AppColor.primaryColor, size: 32),
                     onTap: (){
                       navigationPush(context, const MyResponseRequestScreen());
@@ -105,9 +105,9 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
                 Expanded(
                   flex: 1,
                   child: DashboardItemHome(
-                    title: '????????',
+                    title: 'التخصصات',
                     icon: const Icon(Icons.settings, color: AppColor.primaryColor, size: 32),
-                    subTitle: '??????? , ?????',
+                    subTitle: 'الخدمات , المدن',
                     onTap: (){
                       navigationPush(context, const SpecialtiesScreen());
                     },
@@ -119,9 +119,9 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
                 Expanded(
                   flex: 1,
                   child: DashboardItemHome(
-                    title: '??????? ??????',
+                    title: 'إعدادات الحساب',
                     icon: const Icon(Icons.business, color: AppColor.primaryColor, size: 32),
-                    subTitle: '?????',
+                    subTitle: 'حسابي',
                     onTap: (){
                       navigationPush(context, const ProfileVendorScreen());
                     },
@@ -137,8 +137,8 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
                 Expanded(
                   flex: 1,
                   child: DashboardItemHome(
-                    title: '???? ???????',
-                    subTitle: '????? ???????',
+                    title: 'سداد العمولة',
+                    subTitle: 'عمولة التطبيق',
                     icon: const Icon(Icons.monetization_on, color: AppColor.primaryColor, size: 32),
                     onTap: (){
                       navigationPush(context, const AppCommissionScreen());
@@ -151,19 +151,22 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
                 Expanded(
                   flex: 1,
                   child: DashboardItemHome(
-                    title: '????? ??????',
-                    subTitle: '????? ?????? ?? ??????',
+                    title: 'تسجيل الخروج',
+                    subTitle: 'تسجيل الخروج من الحساب',
                     icon: const Icon(Icons.logout, color: AppColor.primaryColor, size: 32),
                     onTap: (){
-                      DialogUtils().showConfirmDialog(context, message: '?? ???? ????? ??????', confirm: () async => await context.read<AuthProvider>().logout(context));
+                      DialogUtils().showConfirmDialog(context, message: 'هل تريد تسجيل الخروج من الحساب؟', confirm: () async => await context.read<AuthProvider>().logout(context));
                     },
                   ),
                 ),
               ],
             ),),
           const SizedBox(height: 10,),
+
         ],
       ),
     );
   }
 }
+
+
