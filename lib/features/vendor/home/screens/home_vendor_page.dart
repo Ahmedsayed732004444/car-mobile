@@ -82,7 +82,7 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
               Expanded(
                 flex: 1,
                 child: SectionBadgeWidget(
-                  categoryKey: 'company_responses',
+                  categoryKey: 'conversations',
                   child: DashboardItemHome(
                     title: 'ردود ومحادثات',
                     subTitle: 'ردود الطلبات',

@@ -86,21 +86,13 @@ class ConversationProvider extends ChangeNotifier {
       return;
     }
 
+    int? convId;
     _toggleLoading();
     try {
       final _response = await _conversationService.createConversation(body: body);
       if (_response != null) {
         if(_response['success']){
-           await navigationPush(context, ChatScreen(
-             conversationId: _response['result']['conversationId'],
-             requestId: requestId,
-             responseId: responseId,
-             vendorId: vendorId,
-             receiverName: receiverName,
-             receiverLogo: receiverLogo,
-             myUserId: context.read<AuthProvider>().currentUseModel?.id ?? 0,
-             isVendor: isVendor,
-           ));
+           convId = _response['result']['conversationId'];
         }else{
           ToastHelper.showError(_response['message']);
         }
@@ -110,6 +102,19 @@ class ConversationProvider extends ChangeNotifier {
       ToastHelper.showError(e.toString());
     } finally {
       _toggleLoading();
+    }
+
+    if (convId != null) {
+       await navigationPush(context, ChatScreen(
+         conversationId: convId,
+         requestId: requestId,
+         responseId: responseId,
+         vendorId: vendorId,
+         receiverName: receiverName,
+         receiverLogo: receiverLogo,
+         myUserId: context.read<AuthProvider>().currentUseModel?.id ?? 0,
+         isVendor: isVendor,
+       ));
     }
   }
 
@@ -204,3 +209,4 @@ class ConversationProvider extends ChangeNotifier {
   }
 
 }
+
