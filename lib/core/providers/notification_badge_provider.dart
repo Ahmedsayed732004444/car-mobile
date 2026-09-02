@@ -49,7 +49,13 @@ class NotificationBadgeProvider extends ChangeNotifier {
     if (entityMap != null && entityMap.isNotEmpty) {
       int sum = 0;
       entityMap.forEach((_, count) {
-        if (count > 0) sum += count;
+        if (count > 0) {
+          if (category == 'conversations') {
+            sum += 1;
+          } else {
+            sum += count;
+          }
+        }
       });
       return sum;
     }
