@@ -23,7 +23,9 @@ import '../../../../widgets/section_badge_widget.dart';
 import '../../../shared/chat/screens/chat_screen.dart';
 
 class UserConversationScreen extends StatefulWidget {
-  const UserConversationScreen({super.key});
+  final int? requestId;
+  final bool isStandalone;
+  const UserConversationScreen({super.key, this.requestId, this.isStandalone = false});
 
   @override
   _UserConversationScreenState createState() => _UserConversationScreenState();
@@ -40,7 +42,7 @@ class _UserConversationScreenState extends State<UserConversationScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final provider = Provider.of<ConversationProvider>(context, listen: false);
       provider.resetPagination();
-      await provider.getMyConversations(path: ApiEndpoints.userConversations);
+      await provider.getMyConversations(path: widget.requestId != null ? "${ApiEndpoints.userConversations}?request_id=${widget.requestId}" : ApiEndpoints.userConversations);
     });
     
     _scrollController.addListener(() {
@@ -49,7 +51,7 @@ class _UserConversationScreenState extends State<UserConversationScreen> {
           _scrollController.position.maxScrollExtent &&
           !p.isLoading &&
           p.hasMore) {
-        p.getMyConversations( path: ApiEndpoints.userConversations,loadMore: true);
+        p.getMyConversations( path: widget.requestId != null ? "${ApiEndpoints.userConversations}?request_id=${widget.requestId}" : ApiEndpoints.userConversations,loadMore: true);
       }
     });
   }
@@ -68,11 +70,11 @@ class _UserConversationScreenState extends State<UserConversationScreen> {
       builder: (context, provider, child) {
 
         if ( provider.conversationModelList.isEmpty && provider.isLoading) {
-          return const CustomLoading();
+          return widget.isStandalone ? Scaffold(appBar: AppBar(title: const Text('محادثات الطلب')), body: const CustomLoading()) : const CustomLoading();
         }
 
-        return RefreshIndicator(
-          onRefresh: () => provider.refreshGetMyConversations(ApiEndpoints.userConversations),
+        Widget body = RefreshIndicator(
+          onRefresh: () => provider.refreshGetMyConversations(widget.requestId != null ? "${ApiEndpoints.userConversations}?request_id=${widget.requestId}" : ApiEndpoints.userConversations),
           child: provider.conversationModelList.isNotEmpty ? ListView.builder(
             controller: _scrollController,
             physics: const AlwaysScrollableScrollPhysics(),
@@ -141,9 +143,22 @@ class _UserConversationScreenState extends State<UserConversationScreen> {
                 );
               }
             },
-          ) : const CustomEmptyWidget(label: 'لا توجد محادثات للعرض حالياً',),);
+) : const CustomEmptyWidget(label: '?? ???? ??????? ?????? ??????',),);
+
+        if (widget.isStandalone) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('??????? ?????', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),),
+              backgroundColor: AppColor.primaryColor,
+              iconTheme: const IconThemeData(color: Colors.white),
+            ),
+            body: body,
+          );
+        }
+        return body;
       },
     );
   }
 }
+
 

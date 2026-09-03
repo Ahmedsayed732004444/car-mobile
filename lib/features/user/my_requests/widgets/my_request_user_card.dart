@@ -15,6 +15,7 @@ import '../../../../models/request_model.dart';
 import '../../../../widgets/request_status_widget.dart';
 import '../screens/details_my_request_screen.dart';
 import '../screens/responses_my_request_screen.dart';
+import '../../my_conversations/screens/user_conversations_screen.dart';
 
 
 class MyRequestUserCard extends StatelessWidget {
@@ -91,34 +92,66 @@ class MyRequestUserCard extends StatelessWidget {
             const Divider(
               color: AppColor.grey200,
             ),
-            _BuildRequestCardItem(
-              icon: Icons.category,
-              label: 'القسم :',
-              value: model.catNameAr,
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            _BuildRequestCardItem(
-              icon: Icons.location_on,
-              label: 'مدينة الطلب :',
-              value: model.cityCustomerNameAr,
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            _BuildRequestCardItem(
-              icon: Icons.date_range,
-              label: 'تاريخ الطلب :',
-              value:DateParserUtils.timeAgoFormat(model.requestDate),
-            ),
-            const SizedBox(
-              height: 5,
-            ),
-            _BuildRequestCardItem(
-              icon: Icons.reply,
-              label: 'عدد الردود :',
-              value: model.countResponse.toString(),
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _BuildRequestCardItem(
+                        icon: Icons.category,
+                        label: 'القسم :',
+                        value: model.catNameAr,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      _BuildRequestCardItem(
+                        icon: Icons.location_on,
+                        label: 'مدينة الطلب :',
+                        value: model.cityCustomerNameAr,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      _BuildRequestCardItem(
+                        icon: Icons.date_range,
+                        label: 'تاريخ الطلب :',
+                        value:DateParserUtils.timeAgoFormat(model.requestDate),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      _BuildRequestCardItem(
+                        icon: Icons.reply,
+                        label: 'عدد الردود :',
+                        value: model.countResponse.toString(),
+                      ),
+                    ],
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    navigationPush(context, UserConversationScreen(requestId: model.requestId, isStandalone: true,));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(12),
+                    margin: const EdgeInsets.only(left: 8),
+                    decoration: BoxDecoration(
+                      color: AppColor.primaryColor.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColor.primaryColor.withOpacity(0.2)),
+                    ),
+                    child: Column(
+                      children: [
+                        const Icon(Icons.chat_bubble_outline_rounded, color: AppColor.primaryColor, size: 28),
+                        const SizedBox(height: 6),
+                        Text('الدردشات', style: TextStyle(color: AppColor.primaryColor, fontSize: SizeConfig.widthResponsive(0.03), fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
 
             const SizedBox(
@@ -200,3 +233,4 @@ class _BuildRequestCardItem extends StatelessWidget {
     );
   }
 }
+
