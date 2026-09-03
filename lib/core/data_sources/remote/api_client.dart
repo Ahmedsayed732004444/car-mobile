@@ -24,7 +24,13 @@ class ApiClient {
   }
 
   Future<dynamic> get(String path, {Map<String, String>? headers, Map<String, dynamic>? queryParams, Duration? timeout}) async {
-    final uri = Uri.parse('$baseUrl$path').replace(queryParameters: queryParams);
+    final initialUri = Uri.parse('$baseUrl$path');
+    final Map<String, dynamic> mergedParams = {};
+    mergedParams.addAll(initialUri.queryParameters);
+    if (queryParams != null) {
+      mergedParams.addAll(queryParams);
+    }
+    final uri = initialUri.replace(queryParameters: mergedParams.isEmpty ? null : mergedParams);
     try {
       final response = await _withRetry<http.Response>(
             ( ) async => await _client.get(uri, headers: headers),
