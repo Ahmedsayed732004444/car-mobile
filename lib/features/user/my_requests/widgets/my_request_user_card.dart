@@ -15,8 +15,8 @@ import '../../../../models/request_model.dart';
 import '../../../../widgets/request_status_widget.dart';
 import '../screens/details_my_request_screen.dart';
 import '../screens/responses_my_request_screen.dart';
-import '../../my_conversations/screens/user_conversations_screen.dart';
 import '../../../../widgets/section_badge_widget.dart';
+import '../../my_conversations/screens/user_conversations_screen.dart';
 
 
 class MyRequestUserCard extends StatelessWidget {
@@ -42,11 +42,7 @@ class MyRequestUserCard extends StatelessWidget {
                   style: txtMedium04,
                 ),
                 const Spacer(),
-                SectionBadgeWidget(
-                  categoryKey: 'request_conversations',
-                  entityId: model.requestId,
-                  offset: const Offset(4, 4),
-                  child: GestureDetector(
+                GestureDetector(
                   onTap: () {
                     context.read<MyRequestUserProvider>().statusMyRequestSelected = model.requestStatus;
                     showModalBottomSheet(
@@ -140,26 +136,26 @@ class MyRequestUserCard extends StatelessWidget {
                   entityId: model.requestId,
                   offset: const Offset(4, 4),
                   child: GestureDetector(
-                  onTap: () {
-                    navigationPush(context, UserConversationScreen(requestId: model.requestId, isStandalone: true,));
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                    margin: const EdgeInsets.only(left: 8),
-                    decoration: BoxDecoration(
-                      color: AppColor.primaryColor.withOpacity(0.08),
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: AppColor.primaryColor.withOpacity(0.2)),
-                    ),
-                    child: Column(
-                      children: [
-                        const Icon(Icons.chat_bubble_outline_rounded, color: AppColor.primaryColor, size: 24),
-                        const SizedBox(height: 4),
-                        Text('الدردشات', style: TextStyle(color: AppColor.primaryColor, fontSize: SizeConfig.widthResponsive(0.028), fontWeight: FontWeight.bold)),
-                      ],
+                    onTap: () {
+                      navigationPush(context, UserConversationScreen(requestId: model.requestId, isStandalone: true,));
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      margin: const EdgeInsets.only(left: 8),
+                      decoration: BoxDecoration(
+                        color: AppColor.primaryColor.withOpacity(0.08),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppColor.primaryColor.withOpacity(0.2)),
+                      ),
+                      child: Column(
+                        children: [
+                          const Icon(Icons.chat_bubble_outline_rounded, color: AppColor.primaryColor, size: 24),
+                          const SizedBox(height: 4),
+                          Text('الدردشات', style: TextStyle(color: AppColor.primaryColor, fontSize: SizeConfig.widthResponsive(0.028), fontWeight: FontWeight.bold)),
+                        ],
+                      ),
                     ),
                   ),
-                ),
                 ),
               ],
             ),
