@@ -143,12 +143,12 @@ class _UserConversationScreenState extends State<UserConversationScreen> {
                 );
               }
             },
-) : const CustomEmptyWidget(label: '?? ???? ??????? ?????? ??????',),);
+) : const CustomEmptyWidget(label: 'لا توجد محادثات سابقة حاليا',),);
 
         if (widget.isStandalone) {
           return Scaffold(
             appBar: AppBar(
-              title: const Text('??????? ?????', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),),
+              title: const Text('دردشات الطلب', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),),
               backgroundColor: AppColor.primaryColor,
               iconTheme: const IconThemeData(color: Colors.white),
             ),
