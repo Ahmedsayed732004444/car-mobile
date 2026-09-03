@@ -16,6 +16,7 @@ import '../../../../widgets/request_status_widget.dart';
 import '../screens/details_my_request_screen.dart';
 import '../screens/responses_my_request_screen.dart';
 import '../../my_conversations/screens/user_conversations_screen.dart';
+import '../../../../widgets/section_badge_widget.dart';
 
 
 class MyRequestUserCard extends StatelessWidget {
@@ -41,7 +42,11 @@ class MyRequestUserCard extends StatelessWidget {
                   style: txtMedium04,
                 ),
                 const Spacer(),
-                GestureDetector(
+                SectionBadgeWidget(
+                  categoryKey: 'request_conversations',
+                  entityId: model.requestId,
+                  offset: const Offset(4, 4),
+                  child: GestureDetector(
                   onTap: () {
                     context.read<MyRequestUserProvider>().statusMyRequestSelected = model.requestStatus;
                     showModalBottomSheet(
@@ -130,7 +135,11 @@ class MyRequestUserCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                GestureDetector(
+                SectionBadgeWidget(
+                  categoryKey: 'request_conversations',
+                  entityId: model.requestId,
+                  offset: const Offset(4, 4),
+                  child: GestureDetector(
                   onTap: () {
                     navigationPush(context, UserConversationScreen(requestId: model.requestId, isStandalone: true,));
                   },
@@ -150,6 +159,7 @@ class MyRequestUserCard extends StatelessWidget {
                       ],
                     ),
                   ),
+                ),
                 ),
               ],
             ),
@@ -233,5 +243,6 @@ class _BuildRequestCardItem extends StatelessWidget {
     );
   }
 }
+
 
 
