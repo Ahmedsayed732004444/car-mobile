@@ -77,7 +77,7 @@ class _ChatScreenState extends State<ChatScreen> {
       if (!widget.isVendor) {
         context.read<VendorProfileProvider>().fetchVendorProfile(context, widget.vendorId, refresh: true);
       }
-      context.read<NotificationBadgeProvider>().markEntityRead(section: 'conversations', entityId: widget.conversationId);
+      context.read<NotificationBadgeProvider>().markEntityRead(section: 'conversations', entityId: widget.conversationId, relatedRequestId: widget.requestId);
       final prov = Provider.of<ConversationProvider>(context, listen: false);
       prov.initProvider();
       prov.setActiveConversation(widget.conversationId);

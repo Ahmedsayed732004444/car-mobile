@@ -109,7 +109,7 @@ class NotificationBadgeProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> markEntityRead({required String section, required int entityId}) async {
+  Future<void> markEntityRead({required String section, required int entityId, int? relatedRequestId}) async {
     // Optimistic local update
     if (entityUnreadCounts[section] != null) {
       final currentEntityCount = entityUnreadCounts[section]?[entityId] ?? 0;
@@ -117,6 +117,17 @@ class NotificationBadgeProvider extends ChangeNotifier {
         entityUnreadCounts[section]?[entityId] = 0;
         unreadCounts[section] = (unreadCounts[section] ?? 0) - currentEntityCount;
         if ((unreadCounts[section] ?? 0) < 0) unreadCounts[section] = 0;
+
+        if (relatedRequestId != null && entityUnreadCounts['request_conversations'] != null) {
+          final reqCount = entityUnreadCounts['request_conversations']?[relatedRequestId] ?? 0;
+          if (reqCount > 0) {
+             entityUnreadCounts['request_conversations']?[relatedRequestId] = reqCount - currentEntityCount;
+             if ((entityUnreadCounts['request_conversations']?[relatedRequestId] ?? 0) < 0) {
+                entityUnreadCounts['request_conversations']?[relatedRequestId] = 0;
+             }
+          }
+        }
+
         notifyListeners();
       }
     }
