@@ -135,18 +135,18 @@ class MyRequestUserCard extends StatelessWidget {
                     navigationPush(context, UserConversationScreen(requestId: model.requestId, isStandalone: true,));
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                     margin: const EdgeInsets.only(left: 8),
                     decoration: BoxDecoration(
                       color: AppColor.primaryColor.withOpacity(0.08),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(10),
                       border: Border.all(color: AppColor.primaryColor.withOpacity(0.2)),
                     ),
                     child: Column(
                       children: [
-                        const Icon(Icons.chat_bubble_outline_rounded, color: AppColor.primaryColor, size: 28),
-                        const SizedBox(height: 6),
-                        Text('الدردشات', style: TextStyle(color: AppColor.primaryColor, fontSize: SizeConfig.widthResponsive(0.03), fontWeight: FontWeight.bold)),
+                        const Icon(Icons.chat_bubble_outline_rounded, color: AppColor.primaryColor, size: 24),
+                        const SizedBox(height: 4),
+                        Text('الدردشات', style: TextStyle(color: AppColor.primaryColor, fontSize: SizeConfig.widthResponsive(0.028), fontWeight: FontWeight.bold)),
                       ],
                     ),
                   ),
@@ -233,4 +233,5 @@ class _BuildRequestCardItem extends StatelessWidget {
     );
   }
 }
+
 
