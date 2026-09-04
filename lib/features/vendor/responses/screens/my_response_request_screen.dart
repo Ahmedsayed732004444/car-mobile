@@ -53,7 +53,7 @@ class _MyResponseRequestScreenState extends State<MyResponseRequestScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text("ردود الشركة", style: txtMedium05,),
+        title: Text("الردود والمحادثات", style: txtMedium05,),
         leading: ArrowBackWidget(myContext: context),
         centerTitle: true,
         elevation: 0,

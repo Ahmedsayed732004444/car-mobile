@@ -84,7 +84,7 @@ class _HomeVendorPageState extends State<HomeVendorPage> {
                 child: SectionBadgeWidget(
                   categoryKey: 'conversations',
                   child: DashboardItemHome(
-                    title: 'ردود ومحادثات',
+                    title: 'الردود والمحادثات',
                     subTitle: 'ردود الطلبات',
                     icon: const Icon(Icons.reply_all_outlined, color: AppColor.primaryColor, size: 32),
                     onTap: (){
