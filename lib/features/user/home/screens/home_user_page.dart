@@ -31,14 +31,12 @@ class _HomeUserPageState extends State<HomeUserPage> {
   final List<Widget> _pages = const [
     HomeUserScreen(),
     MyRequestUserScreen(),
-    UserConversationScreen(),
     AccountScreen(),
   ];
 
   final List<NavBarItem> _navItems = const [
     NavBarItem(icon: AssetsPath.home_icon, label: 'الرئيسية'),
     NavBarItem(icon: AssetsPath.my_orders_icon, label: 'طلباتي'),
-    NavBarItem(icon: AssetsPath.chat_bubble, label: 'محادثاتي'),
     NavBarItem(icon: AssetsPath.user_icon, label: 'حسابي'),
   ];
 
@@ -70,7 +68,6 @@ class _HomeUserPageState extends State<HomeUserPage> {
         items: List.generate(_navItems.length, (index) {
           final item = _navItems[index];
           final isActive = index == navProvider.currentIndex;
-          final String? categoryKey = index == 2 ? 'conversations' : null;
           final List<String>? categoryKeys = index == 1 ? ['company_responses', 'conversations'] : null;
 
           Widget iconWidget = Image.asset(
@@ -78,9 +75,8 @@ class _HomeUserPageState extends State<HomeUserPage> {
             color: isActive ? AppColor.primaryColor : AppColor.greyColor,
           );
 
-          if (categoryKey != null || categoryKeys != null) {
+          if (categoryKeys != null) {
             iconWidget = SectionBadgeWidget(
-              categoryKey: categoryKey,
               categoryKeys: categoryKeys,
               child: iconWidget,
             );

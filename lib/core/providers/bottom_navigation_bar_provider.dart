@@ -14,7 +14,7 @@ class BottomNavigationBarProvider extends ChangeNotifier {
   int get currentIndex => _currentIndex;
 
   // screen required login
-  final List<int> _lockedPages = [1, 2];
+  final List<int> _lockedPages = [1];
 
   Future<void> setCurrentIndex(BuildContext context, int index, {PageController? controller}) async {
 
