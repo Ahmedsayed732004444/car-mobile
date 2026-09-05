@@ -71,12 +71,7 @@ class _MyRequestUserScreenState extends State<MyRequestUserScreen> {
                 final item = provider.requestModelList[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 12),
-                  child: SectionBadgeWidget(
-                    categoryKey: 'company_responses',
-                    entityId: item.requestId,
-                    offset: const Offset(-4, -4),
-                    child: MyRequestUserCard(model: item),
-                  ),
+                  child: MyRequestUserCard(model: item),
                 );
               } else {
                 return const Padding(padding: EdgeInsets.only(bottom: 10),

@@ -165,12 +165,17 @@ class MyRequestUserCard extends StatelessWidget {
             ),
             Row(
               children: [
-                Expanded(flex:1, child: CustomButton(
-                  label: 'إستعراض الردود',
-                  txtSize: SizeConfig.widthResponsive(0.04),
-                  onTap: () {
-                    navigationPush(context, ResponsesMyRequestScreen(requestId: model.requestId,));
-                  },
+                Expanded(flex:1, child: SectionBadgeWidget(
+                  categoryKey: 'company_responses',
+                  entityId: model.requestId,
+                  offset: const Offset(4, -4),
+                  child: CustomButton(
+                    label: 'إستعراض الردود',
+                    txtSize: SizeConfig.widthResponsive(0.04),
+                    onTap: () {
+                      navigationPush(context, ResponsesMyRequestScreen(requestId: model.requestId,));
+                    },
+                  ),
                 )),
                 const SizedBox(width: 10,),
                 Expanded(flex:1, child: CustomButton(
