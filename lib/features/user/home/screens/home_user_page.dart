@@ -70,16 +70,18 @@ class _HomeUserPageState extends State<HomeUserPage> {
         items: List.generate(_navItems.length, (index) {
           final item = _navItems[index];
           final isActive = index == navProvider.currentIndex;
-          final String? categoryKey = index == 1 ? 'company_responses' : (index == 2 ? 'conversations' : null);
+          final String? categoryKey = index == 2 ? 'conversations' : null;
+          final List<String>? categoryKeys = index == 1 ? ['company_responses', 'conversations'] : null;
 
           Widget iconWidget = Image.asset(
             item.icon,
             color: isActive ? AppColor.primaryColor : AppColor.greyColor,
           );
 
-          if (categoryKey != null) {
+          if (categoryKey != null || categoryKeys != null) {
             iconWidget = SectionBadgeWidget(
               categoryKey: categoryKey,
+              categoryKeys: categoryKeys,
               child: iconWidget,
             );
           }

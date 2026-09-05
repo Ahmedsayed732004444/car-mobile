@@ -3,7 +3,8 @@ import 'package:provider/provider.dart';
 import '../core/providers/notification_badge_provider.dart';
 
 class SectionBadgeWidget extends StatelessWidget {
-  final String categoryKey;
+  final String? categoryKey;
+  final List<String>? categoryKeys;
   final int? entityId;
   final Widget child;
   final AlignmentGeometry alignment;
@@ -11,7 +12,8 @@ class SectionBadgeWidget extends StatelessWidget {
 
   const SectionBadgeWidget({
     super.key,
-    required this.categoryKey,
+    this.categoryKey,
+    this.categoryKeys,
     this.entityId,
     required this.child,
     this.alignment = Alignment.topRight,
@@ -22,7 +24,14 @@ class SectionBadgeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<NotificationBadgeProvider>(
       builder: (context, provider, _) {
-        final count = provider.getCount(categoryKey, entityId: entityId);
+        int count = 0;
+        if (categoryKeys != null) {
+          for (var key in categoryKeys!) {
+            count += provider.getCount(key, entityId: entityId);
+          }
+        } else if (categoryKey != null) {
+          count = provider.getCount(categoryKey!, entityId: entityId);
+        }
 
         if (count <= 0) {
           return child;
